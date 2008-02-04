@@ -12,7 +12,7 @@ if (!defined("XOOPS_ROOT_PATH")) {
 }
 
 if (!function_exists('smart_getEditors')) {
-	include_once(XOOPS_ROOT_PATH. '/ modules/smartobject/include/functions.php');
+	include_once(XOOPS_ROOT_PATH. '/modules/smartobject/include/functions.php');
 }
 smart_loadCommonLanguageFile();
 
