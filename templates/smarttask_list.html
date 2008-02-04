@@ -1,0 +1,25 @@
+<{includeq file='db:smarttask_header.html'}>
+
+<{if $smarttask_lists}>
+	<h1><{$smarty.const._MD_SMARTTASK_LISTS}></h1>
+	
+	<div><{$smarttask_lists}></div>
+<{/if}>
+
+<{if $smarttask_list_view}>
+	<{$smarttask_list_view}>
+	<br />
+	<h1><{$smarty.const._MD_SMARTTASK_LIST_ITEMS}></h1>
+	<{$smarttask_list_items}>
+	
+<{/if}>
+
+<{if $smarttask_list}>
+	<{includeq file='db:smartobject_form.html' form=$smarttask_list}>
+<{/if}>
+
+<{if $smartobject_delete_confirm}>
+	<{$smartobject_delete_confirm}>
+<{/if}>
+
+<{includeq file='db:smarttask_footer.html'}>
