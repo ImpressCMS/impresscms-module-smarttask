@@ -4,30 +4,23 @@ function edititem($item_itemid = 0)
 {
 	global $smarttask_item_handler, $smarttask_list_handler, $xoopsTpl;
 
-	$item_listid = isset($_GET['item_listid']) ? intval($_GET['item_listid']) : 0;
-
 	$itemObj = $smarttask_item_handler->get($item_itemid);
-
-	$listObj = $smarttask_list_handler->get($itemObj->getVar('item_listid', 'e'));
-	if ($listObj->isNew()) {
-		redirect_header('index.php', 3, _NOPERM);
-	}
-
-	$itemObj->setVar('item_listid', $item_listid);
-
-	$itemObj->makeFieldReadOnly('item_listid');
 
 	if (!$itemObj->isNew()){
 		$sform = $itemObj->getForm(_MD_STASK_ITEM_EDIT, 'additem');
 		$sform->assign($xoopsTpl, 'smarttask_item');
 		$xoopsTpl->assign('categoryPath', _MD_STASK_ITEM_EDIT);
 	} else {
+		$item_listid = isset($_GET['item_listid']) ? intval($_GET['item_listid']) : 0;
+		$listObj = $smarttask_list_handler->get($item_listid);
+
+		$itemObj->setVar('item_listid', $item_listid);
+
 		$sform = $itemObj->getForm(_MD_STASK_ITEM_CREATE, 'additem');
 		$sform->assign($xoopsTpl, 'smarttask_item');
 		$xoopsTpl->assign('categoryPath', _MD_STASK_ITEM_CREATE);
 	}
 }
-
 
 include_once('header.php');
 
