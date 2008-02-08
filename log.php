@@ -8,15 +8,7 @@ function editlog($log_logid = 0)
 		redirect_header('index.php', 3, _NOPERM);
 	}
 
-	$log_itemid = isset($_GET['log_itemid']) ? intval($_GET['log_itemid']) : 0;
-	$smarttask_item_handler = xoops_getModuleHandler('item');
-	$itemObj = $smarttask_item_handler->get($log_itemid);
-	if ($itemObj->isNew()) {
-		redirect_header('index.php', 3, _NOPERM);
-	}
-
 	$logObj = $smarttask_log_handler->get($log_logid);
-	$logObj->setVar('log_itemid', $log_itemid);
 	$logObj->setVar('log_uid', $xoopsUser->uid());
 	$logObj->setVar('log_date', time());
 	$logObj->hideFieldFromForm(array('log_uid', 'log_date'));
@@ -28,6 +20,13 @@ function editlog($log_logid = 0)
 		$sform->assign($xoopsTpl, 'smarttask_log');
 		$xoopsTpl->assign('categoryPath', _MD_STASK_LOG_EDIT);
 	} else {
+		$log_itemid = isset($_GET['log_itemid']) ? intval($_GET['log_itemid']) : 0;
+		$smarttask_item_handler = xoops_getModuleHandler('item');
+		$itemObj = $smarttask_item_handler->get($log_itemid);
+		if ($itemObj->isNew()) {
+			redirect_header('index.php', 3, _NOPERM);
+		}
+		$logObj->setVar('log_itemid', $log_itemid);
 		$sform = $logObj->getForm(_MD_STASK_LOG_CREATE, 'addlog');
 		$sform->assign($xoopsTpl, 'smarttask_log');
 		$xoopsTpl->assign('categoryPath', _MD_STASK_LOG_CREATE);
