@@ -81,7 +81,16 @@ switch ($op) {
 
 	case "view" :
 		$logObj = $smarttask_log_handler->get($log_logid);
-		$xoopsTpl->assign('smarttask_log_view', $logObj->displaySingleObject(true, true));
+
+		$view_actions_col = array();
+		if (smarttask_checkPermission('log_add')) {
+			$view_actions_col[] = 'edit';
+		}
+		if (smarttask_checkPermission('log_delete')) {
+			$view_actions_col[] = 'delete';
+		}
+
+		$xoopsTpl->assign('smarttask_log_view', $logObj->displaySingleObject(true, true, $view_actions_col, false));
 
 		$xoopsTpl->assign('module_home', smart_getModuleName(true, true));
 

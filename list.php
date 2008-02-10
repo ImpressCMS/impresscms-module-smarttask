@@ -16,7 +16,6 @@ function editlist($list_listid = 0)
 	}
 }
 
-
 include_once('header.php');
 
 $xoopsOption['template_main'] = 'smarttask_list.html';
@@ -73,7 +72,7 @@ switch ($op) {
 		}
 
 		$listObj = $smarttask_list_handler->get($list_listid);
-		$xoopsTpl->assign('smarttask_list_view', $listObj->displaySingleObject(true, true, $view_actions_col));
+		$xoopsTpl->assign('smarttask_list_view', $listObj->displaySingleObject(true, true, $view_actions_col, false));
 
 		$criteria = new CriteriaCompo();
 		$criteria->add(new Criteria('item_listid', $list_listid));

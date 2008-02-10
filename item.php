@@ -78,7 +78,7 @@ switch ($op) {
 		if (smarttask_checkPermission('item_delete')) {
 			$view_actions_col[] = 'delete';
 		}
-		$xoopsTpl->assign('smarttask_item_view', $itemObj->displaySingleObject(true, true, $view_actions_col));
+		$xoopsTpl->assign('smarttask_item_view', $itemObj->displaySingleObject(true, true, $view_actions_col, false));
 
 		$criteria = new CriteriaCompo();
 		$criteria->add(new Criteria('log_itemid', $item_itemid));
