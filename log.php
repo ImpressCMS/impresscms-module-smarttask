@@ -58,6 +58,7 @@ switch ($op) {
 	case "mod":
 	case "changedField":
 
+		smarttask_checkPermission('log_add', 'list.php', _CO_SMARTTASK_LOG_ADD_NOPERM);
 		editlog($log_logid);
 		$xoopsTpl->assign('module_home', smart_getModuleName(true, true));
 		break;
@@ -70,6 +71,7 @@ switch ($op) {
 		break;
 
 	case "del":
+		smarttask_checkPermission('log_delete', 'list.php', _CO_SMARTTASK_LOG_DELETE_NOPERM);
 	    include_once XOOPS_ROOT_PATH."/modules/smartobject/class/smartobjectcontroller.php";
         $controller = new SmartObjectController($smarttask_log_handler);
 		$controller->handleObjectDeletionFromUserSide();
@@ -88,20 +90,7 @@ switch ($op) {
 		break;
 
 	default:
-		$objectTable = new SmartObjectTable($smarttask_log_handler, $criteria);
-		$objectTable->isForUserSide();
-
-		$objectTable->addColumn(new SmartObjectColumn('log_deadline', 'left', 150));
-		$objectTable->addColumn(new SmartObjectColumn('log_title', 'left'));
-		$objectTable->addColumn(new SmartObjectColumn('log_completed', 'center', 100));
-
-		$objectTable->addIntroButton('addlog', 'log.php?op=mod', _MD_STASK_LOG_CREATE);
-
-		$objectTable->addQuickSearch(array('log_title', 'log_description'));
-
-		$xoopsTpl->assign('smarttask_logs', $objectTable->fetch());
-		$xoopsTpl->assign('module_home', smart_getModuleName(false, true));
-
+		redirect_header(SMARTTASK_URL, 3, _NOPERM);
 		break;
 }
 

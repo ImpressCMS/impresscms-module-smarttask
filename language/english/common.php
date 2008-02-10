@@ -29,6 +29,9 @@ define("_CO_SMARTTASK_LIST_LIST_DEADLINE_DSC", "");
 define("_CO_SMARTTASK_LIST_LIST_COMPLETED", "Completed");
 define("_CO_SMARTTASK_LIST_LIST_COMPLETED_DSC", "");
 
+define("_CO_SMARTTASK_LIST_ADD_NOPERM", "You do not have permission to add or edit a list.");
+define("_CO_SMARTTASK_LIST_DELETE_NOPERM", "You do not have permission to delete this list.");
+
 define("_CO_SMARTTASK_LIST_FILTER_COMPLETED", "Completed");
 define("_CO_SMARTTASK_LIST_FILTER_NOT_COMPLETED", "Not completed");
 
@@ -48,6 +51,9 @@ define("_CO_SMARTTASK_ITEM_ITEM_DEADLINE_DSC", "");
 define("_CO_SMARTTASK_ITEM_ITEM_COMPLETED", "Completed");
 define("_CO_SMARTTASK_ITEM_ITEM_COMPLETED_DSC", "");
 
+define("_CO_SMARTTASK_ITEM_ADD_NOPERM", "You do not have permission to add or edit an item.");
+define("_CO_SMARTTASK_ITEM_DELETE_NOPERM", "You do not have permission to delete this item.");
+
 // log
 define("_CO_SMARTTASK_LOG_LOG_ITEMID", "Item");
 define("_CO_SMARTTASK_LOG_LOG_ITEMID_DSC", "");
@@ -57,5 +63,9 @@ define("_CO_SMARTTASK_LOG_LOG_UID", "User");
 define("_CO_SMARTTASK_LOG_LOG_UID_DSC", "");
 define("_CO_SMARTTASK_LOG_LOG_MESSAGE", "Message");
 define("_CO_SMARTTASK_LOG_LOG_MESSAGE_DSC", "");
+
+define("_CO_SMARTTASK_LOG_ADD_NOPERM", "You do not have permission to add or edit a log.");
+define("_CO_SMARTTASK_LOG_DELETE_NOPERM", "You do not have permission to delete this log.");
+
 
 ?>

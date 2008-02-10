@@ -25,5 +25,8 @@ define("_MI_STASK_LISTS", "Lists");
 define("_MI_STASK_ITEMS", "Items");
 define("_MI_STASK_LOGS", "Logs");
 
+define("_MI_STASK_TEAM_GR", "Team groups");
+define("_MI_STASK_TEAM_GRDSC", "These groups will be considered as the users in your team. These groups will have permissions to create, edit and delete lists and items on the user side.");
+
 
 ?>

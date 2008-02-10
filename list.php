@@ -40,6 +40,7 @@ if (!$op && $list_listid > 0) {
 switch ($op) {
 	case "mod":
 	case "changedField":
+		smarttask_checkPermission('list_add', 'list.php', _CO_SMARTTASK_LIST_ADD_NOPERM);
 
 		editlist($list_listid);
 		$xoopsTpl->assign('module_home', smart_getModuleName(true, true));
@@ -53,6 +54,8 @@ switch ($op) {
 		break;
 
 	case "del":
+	    smarttask_checkPermission('list_delete', 'list.php', _CO_SMARTTASK_LIST_DELETE_NOPERM);
+
 	    include_once XOOPS_ROOT_PATH."/modules/smartobject/class/smartobjectcontroller.php";
         $controller = new SmartObjectController($smarttask_list_handler);
 		$controller->handleObjectDeletionFromUserSide();
@@ -61,13 +64,29 @@ switch ($op) {
 		break;
 
 	case "view" :
+		$view_actions_col = array();
+		if (smarttask_checkPermission('list_add')) {
+			$view_actions_col[] = 'edit';
+		}
+		if (smarttask_checkPermission('list_delete')) {
+			$view_actions_col[] = 'delete';
+		}
+
 		$listObj = $smarttask_list_handler->get($list_listid);
-		$xoopsTpl->assign('smarttask_list_view', $listObj->displaySingleObject(true, true));
+		$xoopsTpl->assign('smarttask_list_view', $listObj->displaySingleObject(true, true, $view_actions_col));
 
 		$criteria = new CriteriaCompo();
 		$criteria->add(new Criteria('item_listid', $list_listid));
 
-		$objectTable = new SmartObjectTable($smarttask_item_handler, $criteria);
+		$table_actions_col = array();
+		if (smarttask_checkPermission('list_add')) {
+			$table_actions_col[] = 'edit';
+		}
+		if (smarttask_checkPermission('list_delete')) {
+			$table_actions_col[] = 'delete';
+		}
+
+		$objectTable = new SmartObjectTable($smarttask_item_handler, $criteria, $table_actions_col);
 		$objectTable->isForUserSide();
 		$objectTable->addColumn(new SmartObjectColumn('item_deadline', 'left', 150));
 		$objectTable->addColumn(new SmartObjectColumn('item_title', 'left'));
@@ -89,7 +108,9 @@ switch ($op) {
 
 		$objectTable->addFilter('item_owner_uid', 'getOwner_uids');
 
-		$objectTable->addIntroButton('additem', 'item.php?op=mod&item_listid=' . $list_listid, _MD_STASK_ITEM_CREATE);
+		if (smarttask_checkPermission('list_add')) {
+			$objectTable->addIntroButton('additem', 'item.php?op=mod&item_listid=' . $list_listid, _MD_STASK_ITEM_CREATE);
+		}
 		$xoopsTpl->assign('smarttask_list_items', $objectTable->fetch());
 
 		$xoopsTpl->assign('module_home', smart_getModuleName(true, true));
@@ -98,14 +119,25 @@ switch ($op) {
 		break;
 
 	default:
-		$objectTable = new SmartObjectTable($smarttask_list_handler);
+		$table_actions_col = array();
+		if (smarttask_checkPermission('list_add')) {
+			$table_actions_col[] = 'edit';
+		}
+		if (smarttask_checkPermission('list_delete')) {
+			$table_actions_col[] = 'delete';
+		}
+
+		$objectTable = new SmartObjectTable($smarttask_list_handler, false, $table_actions_col);
 		$objectTable->isForUserSide();
 
 		$objectTable->addColumn(new SmartObjectColumn('list_deadline', 'left', 150));
 		$objectTable->addColumn(new SmartObjectColumn('list_title', 'left'));
 		$objectTable->addColumn(new SmartObjectColumn('list_completed', 'center', 100));
 
-		$objectTable->addIntroButton('addlist', 'list.php?op=mod', _MD_STASK_LIST_CREATE);
+
+		if (smarttask_checkPermission('list_add')) {
+			$objectTable->addIntroButton('addlist', 'list.php?op=mod', _MD_STASK_LIST_CREATE);
+		}
 
 		$objectTable->addQuickSearch(array('list_title', 'list_description'));
 

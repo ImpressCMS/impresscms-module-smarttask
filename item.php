@@ -47,6 +47,7 @@ switch ($op) {
 	case "mod":
 	case "changedField":
 
+		smarttask_checkPermission('item_add', 'list.php', _CO_SMARTTASK_ITEM_ADD_NOPERM);
 		edititem($item_itemid);
 		$xoopsTpl->assign('module_home', smart_getModuleName(true, true));
 		break;
@@ -59,6 +60,7 @@ switch ($op) {
 		break;
 
 	case "del":
+		smarttask_checkPermission('item_delete', 'list.php', _CO_SMARTTASK_ITEM_DELETE_NOPERM);
 	    include_once XOOPS_ROOT_PATH."/modules/smartobject/class/smartobjectcontroller.php";
         $controller = new SmartObjectController($smarttask_item_handler);
 		$controller->handleObjectDeletionFromUserSide();
@@ -69,19 +71,36 @@ switch ($op) {
 	case "view" :
 		$itemObj = $smarttask_item_handler->get($item_itemid);
 
-		$xoopsTpl->assign('smarttask_item_view', $itemObj->displaySingleObject(true, true));
+		$view_actions_col = array();
+		if (smarttask_checkPermission('item_add')) {
+			$view_actions_col[] = 'edit';
+		}
+		if (smarttask_checkPermission('item_delete')) {
+			$view_actions_col[] = 'delete';
+		}
+		$xoopsTpl->assign('smarttask_item_view', $itemObj->displaySingleObject(true, true, $view_actions_col));
 
 		$criteria = new CriteriaCompo();
 		$criteria->add(new Criteria('log_itemid', $item_itemid));
 
-		$objectTable = new SmartObjectTable($smarttask_log_handler, $criteria);
+		$table_actions_col = array();
+		if (smarttask_checkPermission('log_add')) {
+			$table_actions_col[] = 'edit';
+		}
+		if (smarttask_checkPermission('log_delete')) {
+			$table_actions_col[] = 'delete';
+		}
+
+		$objectTable = new SmartObjectTable($smarttask_log_handler, $criteria, $table_actions_col);
 		$objectTable->isForUserSide();
 
 		$objectTable->addColumn(new SmartObjectColumn('log_date', 'left', 150));
 		$objectTable->addColumn(new SmartObjectColumn('log_message'));
 		$objectTable->addColumn(new SmartObjectColumn('log_uid', 'left', 150));
 
-		$objectTable->addIntroButton('addlog', 'log.php?op=mod&log_itemid=' . $item_itemid, _MD_STASK_LOG_CREATE);
+		if (smarttask_checkPermission('log_add')) {
+			$objectTable->addIntroButton('addlog', 'log.php?op=mod&log_itemid=' . $item_itemid, _MD_STASK_LOG_CREATE);
+		}
 
 		$xoopsTpl->assign('smarttask_item_logs', $objectTable->fetch());
 
@@ -92,33 +111,7 @@ switch ($op) {
 		break;
 
 	default:
-		$objectTable = new SmartObjectTable($smarttask_item_handler, $criteria);
-		$objectTable->isForUserSide();
-
-		$objectTable->addColumn(new SmartObjectColumn('item_deadline', 'left', 150));
-		$objectTable->addColumn(new SmartObjectColumn('item_title', 'left'));
-		$objectTable->addColumn(new SmartObjectColumn('item_completed', 'center', 100));
-
-		$objectTable->addIntroButton('additem', 'item.php?op=mod', _MD_STASK_ITEM_CREATE);
-
-		$objectTable->addQuickSearch(array('item_title', 'item_description'));
-
-		$criteria_completed = new CriteriaCompo();
-		$criteria_completed->add(new Criteria('item_completed', 1));
-		$objectTable->addFilter(_CO_SMARTTASK_ITEM_FILTER_COMPLETED, array(
-									'key' => 'item_completed',
-									'criteria' => $criteria_completed
-		));
-		$criteria_not_completed = new CriteriaCompo();
-		$criteria_not_completed->add(new Criteria('item_completed', 0));
-		$objectTable->addFilter(_CO_SMARTTASK_ITEM_FILTER_NOT_COMPLETED, array(
-									'key' => 'item_completed',
-									'criteria' => $criteria_not_completed
-		));
-
-		$xoopsTpl->assign('smarttask_items', $objectTable->fetch());
-		$xoopsTpl->assign('module_home', smart_getModuleName(false, true));
-
+		redirect_header(SMARTTASK_URL, 3, _NOPERM);
 		break;
 }
 

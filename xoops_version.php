@@ -136,6 +136,22 @@ $modversion['config'][$i]['options'] = smart_getEditors();
 $modversion['config'][$i]['default'] = 'dhtmltextarea';
 $i++;
 
+// Retreive the group user list, because the autpmatic group_multi config formtype does not include Anonymous group :-(
+$member_handler =& xoops_gethandler('member');
+$groups_array = $member_handler->getGroupList();
+foreach($groups_array as $k=>$v) {
+	$select_groups_options[$v] = $k;
+}
+//common prefs for all module uses
+$i++;
+$modversion['config'][$i]['name'] = 'team_groups';
+$modversion['config'][$i]['title'] = '_MI_STASK_TEAM_GR';
+$modversion['config'][$i]['description'] = '_MI_STASK_TEAM_GRDSC';
+$modversion['config'][$i]['formtype'] = 'select_multi';
+$modversion['config'][$i]['valuetype'] = 'array';
+$modversion['config'][$i]['options'] = $select_groups_options;
+$modversion['config'][$i]['default'] =  '1';
+
 /*
 $i++;
 $modversion['config'][$i]['name'] = 'show_subcats';
