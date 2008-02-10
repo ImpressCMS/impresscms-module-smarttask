@@ -23,7 +23,7 @@ class SmarttaskLog extends SmartObject {
 
         $this->quickInitVar('log_logid', XOBJ_DTYPE_INT, true);
         $this->quickInitVar('log_itemid', XOBJ_DTYPE_INT, true);
-        $this->quickInitVar('log_date', XOBJ_DTYPE_STIME);
+        $this->quickInitVar('log_date', XOBJ_DTYPE_LTIME);
         $this->quickInitVar('log_uid', XOBJ_DTYPE_TXTBOX, true);
         $this->quickInitVar('log_message', XOBJ_DTYPE_TXTAREA);
 
