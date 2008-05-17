@@ -11,12 +11,12 @@
 
 
 if (!defined("XOOPS_ROOT_PATH")) {
- 	die("XOOPS root path n„o definido");
+ 	die("Caminho para a Raiz n√£o est√° definido");
 
 }
 
 define("_MB_SMASK_FORM_TITLE", "Mascarar");
-define("_MB_SMASK_SELECT_GROUP", "Select o(s) grupo(s) que ser„o mascarados");
+define("_MB_SMASK_SELECT_GROUP", "Select o(s) grupo(s) que ser√£o mascarados");
 define("_MB_SMASK_MASQUERADE_CANCEL", "Cancelar a mascara e resumir o usuario original");
 define("_MB_SMASK_MASQUERADE_CANCELED", "Mascara cancelada");
 define("_MB_SMASK_MASQUERADE_STARTED", "Mascara iniciada!");

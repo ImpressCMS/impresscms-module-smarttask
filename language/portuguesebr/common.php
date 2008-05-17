@@ -11,7 +11,7 @@
 
 
 if (!defined("XOOPS_ROOT_PATH")) {
- 	die("XOOPS root path n�o definido");
+ 	die("Caminho para a Raiz não está definido");
 
 }
 

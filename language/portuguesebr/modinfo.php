@@ -11,7 +11,7 @@
 
 
 if (!defined("XOOPS_ROOT_PATH")) {
- 	die("XOOPS root path n„o definido");
+ 	die("Caminho para a Raiz n√£o est√° definido");
 }
 
 // Module Info
@@ -19,9 +19,9 @@ if (!defined("XOOPS_ROOT_PATH")) {
 
 global $xoopsModule;
 define("_MI_SMASK_MD_NAME", "SmartMask");
-define("_MI_SMASK_MD_DESC", " Possibilita que administradores criem mascaras, por exemplo, ver o site com as permissıes de um usuario");
+define("_MI_SMASK_MD_DESC", " Possibilita que administradores criem mascaras, por exemplo, ver o site com as permiss√µes de um usuario");
 
-define("_MI_SMASK_INDEX", "InformaÁ„o");
+define("_MI_SMASK_INDEX", "Informa√ß√£o");
 
 define("_MI_SMASK_DO_MASQUERADE", "Comece um bloco mascarado");
 define("_MI_SMASK_CANCEL_MASQUERADE", "Cancelar um bloco mascarado");

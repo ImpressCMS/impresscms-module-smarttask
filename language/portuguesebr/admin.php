@@ -12,9 +12,9 @@
 
 
 if (!defined("XOOPS_ROOT_PATH")) {
- 	die("XOOPS root path não definido");
+ 	die("Caminho para a Raiz nÃ£o estÃ¡ definido");
 }
-define("_AM_SMASK_INDEX", "Informaçãp");
+define("_AM_SMASK_INDEX", "InformaÃ§Ã£p");
 define("_AM_SMASK_HOW_IT_WORKS", "Como isso trabalha");
-define("_AM_SMASK_HOW_IT_WORKS_DSC", "Algumas explicações sobre o módulo SmartMask.");
+define("_AM_SMASK_HOW_IT_WORKS_DSC", "Algumas explicaÃ§Ãµes sobre o mÃ³dulo SmartMask.");
 ?>

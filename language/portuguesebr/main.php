@@ -10,7 +10,7 @@
 /**  Text edited by rjfroes on 12/02/08 */
 
 if (!defined("XOOPS_ROOT_PATH")) {
- 	die("XOOPS root path n�o definido");
+ 	die("Caminho para a Raiz não está definido");
 }
 
 
