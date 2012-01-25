@@ -2,14 +2,14 @@
 
 function editlog($log_logid = 0)
 {
-	global $smarttask_log_handler, $xoopsTpl, $xoopsUser;
+	global $smarttask_log_handler, $icmsTpl, $icmsUser;
 
-	if (!is_object($xoopsUser)) {
+	if (!is_object($icmsUser)) {
 		redirect_header('index.php', 3, _NOPERM);
 	}
 
 	$logObj = $smarttask_log_handler->get($log_logid);
-	$logObj->setVar('log_uid', $xoopsUser->uid());
+	$logObj->setVar('log_uid', $icmsUser->uid());
 	$logObj->setVar('log_date', time());
 	$logObj->hideFieldFromForm(array('log_uid', 'log_date'));
 
@@ -17,19 +17,19 @@ function editlog($log_logid = 0)
 
 	if (!$logObj->isNew()){
 		$sform = $logObj->getForm(_MD_STASK_LOG_EDIT, 'addlog');
-		$sform->assign($xoopsTpl, 'smarttask_log');
-		$xoopsTpl->assign('categoryPath', _MD_STASK_LOG_EDIT);
+		$sform->assign($icmsTpl, 'smarttask_log');
+		$icmsTpl->assign('categoryPath', _MD_STASK_LOG_EDIT);
 	} else {
 		$log_itemid = isset($_GET['log_itemid']) ? intval($_GET['log_itemid']) : 0;
-		$smarttask_item_handler = xoops_getModuleHandler('item');
+		$smarttask_item_handler = icms_getModuleHandler('item', basename(dirname(dirname(__FILE__))), "smarttask");
 		$itemObj = $smarttask_item_handler->get($log_itemid);
 		if ($itemObj->isNew()) {
 			redirect_header('index.php', 3, _NOPERM);
 		}
 		$logObj->setVar('log_itemid', $log_itemid);
 		$sform = $logObj->getForm(_MD_STASK_LOG_CREATE, 'addlog');
-		$sform->assign($xoopsTpl, 'smarttask_log');
-		$xoopsTpl->assign('categoryPath', _MD_STASK_LOG_CREATE);
+		$sform->assign($icmsTpl, 'smarttask_log');
+		$icmsTpl->assign('categoryPath', _MD_STASK_LOG_CREATE);
 	}
 }
 
@@ -37,11 +37,10 @@ function editlog($log_logid = 0)
 include_once('header.php');
 
 $xoopsOption['template_main'] = 'smarttask_log.html';
-include_once(XOOPS_ROOT_PATH . "/header.php");
-include_once SMARTOBJECT_ROOT_PATH."class/smartobjecttable.php";
+include_once(ICMS_ROOT_PATH . "/header.php");
 
-$smarttask_log_handler = xoops_getModuleHandler('log');
-$smarttask_item_handler = xoops_getModuleHandler('item');
+$smarttask_log_handler = icms_getModuleHandler('log', basename(dirname(dirname(__FILE__))), "smarttask");
+$smarttask_item_handler = icms_getModuleHandler('item', basename(dirname(dirname(__FILE__))), "smarttask");
 
 $op = '';
 
@@ -60,23 +59,23 @@ switch ($op) {
 
 		smarttask_checkPermission('log_add', 'list.php', _CO_SMARTTASK_LOG_ADD_NOPERM);
 		editlog($log_logid);
-		$xoopsTpl->assign('module_home', smart_getModuleName(true, true));
+		$icmsTpl->assign('module_home', $smarttaskModuleName);
 		break;
 
 	case "addlog":
-        include_once XOOPS_ROOT_PATH."/modules/smartobject/class/smartobjectcontroller.php";
-        $controller = new SmartObjectController($smarttask_log_handler);
+        include_once ICMS_ROOT_PATH . '/kernel/icmspersistablecontroller.php';
+        $controller = new IcmsPersistableController($smarttask_log_handler);
 		$controller->storeFromDefaultForm(_MD_STASK_LOG_CREATED, _MD_STASK_LOG_MODIFIED);
 
 		break;
 
 	case "del":
 		smarttask_checkPermission('log_delete', 'list.php', _CO_SMARTTASK_LOG_DELETE_NOPERM);
-	    include_once XOOPS_ROOT_PATH."/modules/smartobject/class/smartobjectcontroller.php";
-        $controller = new SmartObjectController($smarttask_log_handler);
+	    include_once ICMS_ROOT_PATH . '/kernel/icmspersistablecontroller.php';
+        $controller = new IcmsPersistableController($smarttask_log_handler);
 		$controller->handleObjectDeletionFromUserSide();
-		$xoopsTpl->assign('module_home', smart_getModuleName(true, true));
-		$xoopsTpl->assign('categoryPath', _MD_STASK_LOG_DELETE);
+		$icmsTpl->assign('module_home', $smarttaskModuleName);
+		$icmsTpl->assign('categoryPath', _MD_STASK_LOG_DELETE);
 		break;
 
 	case "view" :
@@ -90,11 +89,11 @@ switch ($op) {
 			$view_actions_col[] = 'delete';
 		}
 
-		$xoopsTpl->assign('smarttask_log_view', $logObj->displaySingleObject(true, true, $view_actions_col, false));
+		$icmsTpl->assign('smarttask_log_view', $logObj->displaySingleObject(true, true, $view_actions_col, false));
 
-		$xoopsTpl->assign('module_home', smart_getModuleName(true, true));
+		$icmsTpl->assign('module_home', $smarttaskModuleName);
 
-		$xoopsTpl->assign('categoryPath', $logObj->getVar('log_itemid'));
+		$icmsTpl->assign('categoryPath', $logObj->getVar('log_itemid'));
 
 		break;
 

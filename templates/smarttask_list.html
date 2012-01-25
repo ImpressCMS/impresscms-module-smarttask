@@ -15,11 +15,11 @@
 <{/if}>
 
 <{if $smarttask_list}>
-	<{includeq file='db:smartobject_form.html' form=$smarttask_list}>
+	<{includeq file='db:system_common_form.html' form=$smarttask_list}>
 <{/if}>
 
-<{if $smartobject_delete_confirm}>
-	<{$smartobject_delete_confirm}>
+<{if $icmspersistable_delete_confirm}>
+	<{$icmspersistable_delete_confirm}>
 <{/if}>
 
 <{includeq file='db:smarttask_footer.html'}>

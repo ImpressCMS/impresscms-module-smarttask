@@ -9,8 +9,8 @@
 
 /**  not edited by RJB on 3/10/07 */
 
-if (!defined("XOOPS_ROOT_PATH")) {
- 	die("XOOPS root path not defined");
+if (!defined("ICMS_ROOT_PATH")) {
+ 	die("ICMS root path not defined");
 }
 
 // Module Info
@@ -28,5 +28,9 @@ define("_MI_STASK_LOGS", "Logs");
 define("_MI_STASK_TEAM_GR", "Team groups");
 define("_MI_STASK_TEAM_GRDSC", "These groups will be considered as the users in your team. These groups will have permissions to create, edit and delete lists and items on the user side.");
 
+// 1.1 alpha changes
+define('_MI_STASK_ACTION_GR', 'Action groups');
+define('_MI_STASK_ACTION_GRDSC', 'From what groups users can do anything?');
 
-?>
+// Added in 1.1RC
+define("_MI_STASK_TEMPLATES", "Templates");

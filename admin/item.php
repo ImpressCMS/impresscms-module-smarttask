@@ -23,29 +23,28 @@ function edititem($showmenu = false, $item_itemid = 0, $parentid =0)
 	if (!$itemObj->isNew()){
 
 		if ($showmenu) {
-			smart_adminMenu(1, _AM_STASK_ITEMS . " > " . _CO_SOBJECT_EDITING);
+			icms_adminMenu(1, _AM_STASK_ITEMS . " > " . _CO_SOBJECT_EDITING);
 		}
-		smart_collapsableBar('itemedit', _AM_STASK_ITEM_EDIT, _AM_STASK_ITEM_EDIT_INFO);
+		icms_collapsableBar('itemedit', _AM_STASK_ITEM_EDIT, _AM_STASK_ITEM_EDIT_INFO);
 
 		$sform = $itemObj->getForm(_AM_STASK_ITEM_EDIT, 'additem');
 		$sform->display();
-		smart_close_collapsable('itemedit');
+		icms_close_collapsable('itemedit');
 	} else {
 		if ($showmenu) {
-			smart_adminMenu(1, _AM_STASK_ITEMS . " > " . _CO_SOBJECT_CREATINGNEW);
+			icms_adminMenu(1, _AM_STASK_ITEMS );
 		}
-		smart_collapsableBar('itemcreate', _AM_STASK_ITEM_CREATE, _AM_STASK_ITEM_CREATE_INFO);
+		icms_collapsableBar('itemcreate', _AM_STASK_ITEM_CREATE, _AM_STASK_ITEM_CREATE_INFO);
 		$sform = $itemObj->getForm(_AM_STASK_ITEM_CREATE, 'additem');
 		$sform->display();
-		smart_close_collapsable('itemcreate');
+		icms_close_collapsable('itemcreate');
 	}
 }
 
 include_once("admin_header.php");
-include_once SMARTOBJECT_ROOT_PATH."class/smartobjecttable.php";
 
-$smarttask_item_handler = xoops_getModuleHandler('item');
-$smarttask_log_handler= xoops_getModuleHandler('log');
+$smarttask_item_handler = icms_getModuleHandler('item', basename(dirname(dirname(__FILE__))), "smarttask");
+$smarttask_log_handler= icms_getModuleHandler('log', basename(dirname(dirname(__FILE__))), "smarttask");
 
 $op = '';
 
@@ -58,20 +57,20 @@ switch ($op) {
 	case "mod":
 	case "changedField":
 
-		smart_xoops_cp_header();
+		icms_cp_header();
 
 		edititem(true, $item_itemid);
 		break;
 	case "additem":
-        include_once XOOPS_ROOT_PATH."/modules/smartobject/class/smartobjectcontroller.php";
-        $controller = new SmartObjectController($smarttask_item_handler);
+        include_once ICMS_ROOT_PATH . '/kernel/icmspersistablecontroller.php';
+        $controller = new IcmsPersistableController($smarttask_item_handler);
 		$controller->storeFromDefaultForm(_AM_STASK_ITEM_CREATED, _AM_STASK_ITEM_MODIFIED);
 
 		break;
 
 	case "del":
-	    include_once XOOPS_ROOT_PATH."/modules/smartobject/class/smartobjectcontroller.php";
-        $controller = new SmartObjectController($smarttask_item_handler);
+	    include_once ICMS_ROOT_PATH . '/kernel/icmspersistablecontroller.php';
+        $controller = new IcmsPersistableController($smarttask_item_handler);
 		$controller->handleObjectDeletion();
 
 		break;
@@ -79,47 +78,50 @@ switch ($op) {
 	case "view" :
 		$itemObj = $smarttask_item_handler->get($item_itemid);
 
-		smart_xoops_cp_header();
-		smart_adminMenu(1, _AM_STASK_ITEM_VIEW . ' > ' . $itemObj->getVar('item_title'));
+		icms_cp_header();
+		icms_adminMenu(1, _AM_STASK_ITEM_VIEW . ' > ' . $itemObj->getVar('item_title'));
 
-		smart_collapsableBar('itemview', $itemObj->getVar('item_title') . $itemObj->getEditItemLink(), _AM_STASK_ITEM_VIEW_DSC);
+		icms_collapsableBar('itemview', $itemObj->getVar('item_title') . $itemObj->getEditItemLink(), _AM_STASK_ITEM_VIEW_DSC);
 
 		$itemObj->displaySingleObject();
 
-		smart_close_collapsable('itemview');
+		icms_close_collapsable('itemview');
 
-		smart_collapsableBar('itemview_logs', _AM_STASK_LOGS, _AM_STASK_LOGS_IN_ITEM_DSC);
+		icms_collapsableBar('itemview_logs', _AM_STASK_LOGS, _AM_STASK_LOGS_IN_ITEM_DSC);
+		
+		include_once ICMS_ROOT_PATH."/kernel/icmspersistabletable.php";
 
 		$criteria = new CriteriaCompo();
 		$criteria->add(new Criteria('log_itemid', $item_itemid));
 
-		$objectTable = new SmartObjectTable($smarttask_log_handler, $criteria);
-		$objectTable->addColumn(new SmartObjectColumn('log_date', 'left', 150));
-		$objectTable->addColumn(new SmartObjectColumn('log_message'));
-		$objectTable->addColumn(new SmartObjectColumn('log_uid', 'left', 150));
+		$objectTable = new IcmsPersistableTable($smarttask_log_handler, $criteria);
+		$objectTable->addColumn(new IcmsPersistableColumn('log_date', 'left', 150));
+		$objectTable->addColumn(new IcmsPersistableColumn('log_message'));
+		$objectTable->addColumn(new IcmsPersistableColumn('log_uid', 'left', 150));
 
 		$objectTable->addIntroButton('addlog', 'log.php?op=mod&log_itemid=' . $item_itemid, _AM_STASK_LOG_CREATE);
 
 		$objectTable->render();
 
-		smart_close_collapsable('itemview_logs');
+		icms_close_collapsable('itemview_logs');
 
 		break;
 
 	default:
 
-		smart_xoops_cp_header();
+		icms_cp_header();
 
-		smart_adminMenu(1, _AM_STASK_ITEMS);
+		icms_adminMenu(1, _AM_STASK_ITEMS);
 
-		smart_collapsableBar('createditems', _AM_STASK_ITEMS, _AM_STASK_ITEMS_DSC);
+		icms_collapsableBar('createditems', _AM_STASK_ITEMS, _AM_STASK_ITEMS_DSC);
 
-		include_once SMARTOBJECT_ROOT_PATH."class/smartobjecttable.php";
-		$objectTable = new SmartObjectTable($smarttask_item_handler);
-		$objectTable->addColumn(new SmartObjectColumn('item_title', 'left', 150));
-		$objectTable->addColumn(new SmartObjectColumn('item_listid', 'left', false, 'getAdminViewItemLink'));
-		$objectTable->addColumn(new SmartObjectColumn('item_owner_uid', 'left', 150));
-		$objectTable->addColumn(new SmartObjectColumn('item_completed', 'center', 100));
+		include_once ICMS_ROOT_PATH."/kernel/icmspersistabletable.php";
+		
+		$objectTable = new IcmsPersistableTable($smarttask_item_handler);
+		$objectTable->addColumn(new IcmsPersistableColumn('item_title', 'left', 150));
+		$objectTable->addColumn(new IcmsPersistableColumn('item_listid', 'left', false, 'getAdminViewItemLink'));
+		$objectTable->addColumn(new IcmsPersistableColumn('item_owner_uid', 'left', 150));
+		$objectTable->addColumn(new IcmsPersistableColumn('item_completed', 'center', 100));
 
 
 		$criteria_completed = new CriteriaCompo();
@@ -143,12 +145,12 @@ switch ($op) {
 
 		$objectTable->render();
 
-		smart_close_collapsable('createditems');
+		icms_close_collapsable('createditems');
 
 		break;
 }
 
-smart_modFooter();
-xoops_cp_footer();
+
+icms_cp_footer();
 
 ?>

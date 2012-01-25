@@ -11,8 +11,8 @@
 */
 
 /**  Text edited by RJB on 3/10/07 */
-if (!defined("XOOPS_ROOT_PATH")) {
- 	die("XOOPS root path not defined");
+if (!defined("ICMS_ROOT_PATH")) {
+ 	die("ICMS root path not defined");
 }
 
 // general
@@ -67,5 +67,6 @@ define("_CO_SMARTTASK_LOG_LOG_MESSAGE_DSC", "");
 define("_CO_SMARTTASK_LOG_ADD_NOPERM", "You do not have permission to add or edit a log.");
 define("_CO_SMARTTASK_LOG_DELETE_NOPERM", "You do not have permission to delete this log.");
 
-
-?>
+// 1.1 alpha changes
+define('_CO_SMARTTASK_LIST_FILTER_ANY', '(any)');
+define('_CO_SMARTTASK_LIST_FILTER_MYSELF', 'My');

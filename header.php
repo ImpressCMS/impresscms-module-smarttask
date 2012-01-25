@@ -13,8 +13,9 @@ if( !defined("SMARTTASK_DIRNAME") ){
 	define("SMARTTASK_DIRNAME", 'smarttask');
 }
 
-include_once XOOPS_ROOT_PATH.'/modules/' . SMARTTASK_DIRNAME . '/include/common.php';
-smart_loadCommonLanguageFile();
+include_once ICMS_ROOT_PATH.'/modules/' . SMARTTASK_DIRNAME . '/include/common.php';
+//smart_loadCommonLanguageFile();
+icms_loadLanguageFile(SMARTTASK_DIRNAME, 'common');
 
 include_once SMARTTASK_ROOT_PATH . "include/functions.php";
 

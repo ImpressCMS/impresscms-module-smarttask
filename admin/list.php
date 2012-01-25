@@ -19,29 +19,28 @@ function editlist($showmenu = false, $list_listid = 0, $parentid =0)
 	if (!$listObj->isNew()){
 
 		if ($showmenu) {
-			smart_adminMenu(0, _AM_STASK_LISTS . " > " . _CO_SOBJECT_EDITING);
+			icms_adminMenu(0, _AM_STASK_LISTS . " > " . _CO_SOBJECT_EDITING);
 		}
-		smart_collapsableBar('listedit', _AM_STASK_LIST_EDIT, _AM_STASK_LIST_EDIT_INFO);
+		icms_collapsableBar('listedit', _AM_STASK_LIST_EDIT, _AM_STASK_LIST_EDIT_INFO);
 
 		$sform = $listObj->getForm(_AM_STASK_LIST_EDIT, 'addlist');
 		$sform->display();
-		smart_close_collapsable('listedit');
+		icms_close_collapsable('listedit');
 	} else {
 		if ($showmenu) {
-			smart_adminMenu(0, _AM_STASK_LISTS . " > " . _CO_SOBJECT_CREATINGNEW);
+			icms_adminMenu(0, _AM_STASK_LISTS );
 		}
-		smart_collapsableBar('listcreate', _AM_STASK_LIST_CREATE, _AM_STASK_LIST_CREATE_INFO);
+		icms_collapsableBar('listcreate', _AM_STASK_LIST_CREATE, _AM_STASK_LIST_CREATE_INFO);
 		$sform = $listObj->getForm(_AM_STASK_LIST_CREATE, 'addlist');
 		$sform->display();
-		smart_close_collapsable('listcreate');
+		icms_close_collapsable('listcreate');
 	}
 }
 
 include_once("admin_header.php");
-include_once SMARTOBJECT_ROOT_PATH."class/smartobjecttable.php";
 
-$smarttask_list_handler = xoops_getModuleHandler('list');
-$smarttask_item_handler = xoops_getModuleHandler('item');
+$smarttask_list_handler = icms_getModuleHandler('list', basename(dirname(dirname(__FILE__))), "smarttask");
+$smarttask_item_handler = icms_getModuleHandler('item', basename(dirname(dirname(__FILE__))), "smarttask");
 
 $op = '';
 
@@ -54,20 +53,20 @@ switch ($op) {
 	case "mod":
 	case "changedField":
 
-		smart_xoops_cp_header();
+		icms_cp_header();
 
 		editlist(true, $list_listid);
 		break;
 	case "addlist":
-        include_once XOOPS_ROOT_PATH."/modules/smartobject/class/smartobjectcontroller.php";
-        $controller = new SmartObjectController($smarttask_list_handler);
+        include_once ICMS_ROOT_PATH . '/kernel/icmspersistablecontroller.php';
+        $controller = new IcmsPersistableController($smarttask_list_handler);
 		$controller->storeFromDefaultForm(_AM_STASK_LIST_CREATED, _AM_STASK_LIST_MODIFIED);
 
 		break;
 
 	case "del":
-	    include_once XOOPS_ROOT_PATH."/modules/smartobject/class/smartobjectcontroller.php";
-        $controller = new SmartObjectController($smarttask_list_handler);
+	    include_once ICMS_ROOT_PATH . '/kernel/icmspersistablecontroller.php';
+        $controller = new IcmsPersistableController($smarttask_list_handler);
 		$controller->handleObjectDeletion();
 
 		break;
@@ -75,25 +74,27 @@ switch ($op) {
 	case "view" :
 		$listObj = $smarttask_list_handler->get($list_listid);
 
-		smart_xoops_cp_header();
-		smart_adminMenu(0, _AM_STASK_LIST_VIEW . ' > ' . $listObj->getVar('list_title'));
+		require_once ICMS_ROOT_PATH . '/kernel/icmspersistabletable.php';
+		
+		icms_cp_header();
+		icms_adminMenu(0, _AM_STASK_LIST_VIEW . ' > ' . $listObj->getVar('list_title'));
 
-		smart_collapsableBar('listview', $listObj->getVar('list_title') . $listObj->getEditItemLink(), _AM_STASK_LIST_VIEW_DSC);
+		icms_collapsableBar('listview', $listObj->getVar('list_title') . $listObj->getEditItemLink(), _AM_STASK_LIST_VIEW_DSC);
 
 		$listObj->displaySingleObject();
 
-		smart_close_collapsable('listview');
+		icms_close_collapsable('listview');
 
-		smart_collapsableBar('listview_items', _AM_STASK_ITEMS, _AM_STASK_ITEMS_IN_LIST_DSC);
+		icms_collapsableBar('listview_items', _AM_STASK_ITEMS, _AM_STASK_ITEMS_IN_LIST_DSC);
 
 		$criteria = new CriteriaCompo();
 		$criteria->add(new Criteria('item_listid', $list_listid));
 
-		$objectTable = new SmartObjectTable($smarttask_item_handler, $criteria);
-		$objectTable->addColumn(new SmartObjectColumn('item_deadline', 'left', 150));
-		$objectTable->addColumn(new SmartObjectColumn('item_title', 'left', false, 'getAdminViewItemLink'));
-		$objectTable->addColumn(new SmartObjectColumn('item_owner_uid', 'left', 150));
-		$objectTable->addColumn(new SmartObjectColumn('item_completed', 'center', 100));
+		$objectTable = new IcmsPersistableTable($smarttask_item_handler, $criteria);
+		$objectTable->addColumn(new IcmsPersistableColumn('item_deadline', 'left', 150));
+		$objectTable->addColumn(new IcmsPersistableColumn('item_title', 'left', false, 'getAdminViewItemLink'));
+		$objectTable->addColumn(new IcmsPersistableColumn('item_owner_uid', 'left', 150));
+		$objectTable->addColumn(new IcmsPersistableColumn('item_completed', 'center', 100));
 
 		$criteria_completed = new CriteriaCompo();
 		$criteria_completed->add(new Criteria('item_completed', 1));
@@ -114,21 +115,23 @@ switch ($op) {
 
 		$objectTable->render();
 
-		smart_close_collapsable('listview_items');
+		icms_close_collapsable('listview_items');
 
 		break;
 
 	default:
+	
+		require_once ICMS_ROOT_PATH . '/kernel/icmspersistabletable.php';
 
-		smart_xoops_cp_header();
-		smart_adminMenu(0, _AM_STASK_LISTS);
+		icms_cp_header();
+		icms_adminMenu(0, _AM_STASK_LISTS);
 
-		smart_collapsableBar('createdlists', _AM_STASK_LISTS, _AM_STASK_LISTS_DSC);
+		icms_collapsableBar('createdlists', _AM_STASK_LISTS, _AM_STASK_LISTS_DSC);
 
-		$objectTable = new SmartObjectTable($smarttask_list_handler);
-		$objectTable->addColumn(new SmartObjectColumn('list_deadline', 'left', 150));
-		$objectTable->addColumn(new SmartObjectColumn('list_title', 'left', false, 'getAdminViewItemLink'));
-		$objectTable->addColumn(new SmartObjectColumn('list_completed', 'center', 100));
+		$objectTable = new IcmsPersistableTable($smarttask_list_handler);
+		$objectTable->addColumn(new IcmsPersistableColumn('list_deadline', 'left', 150));
+		$objectTable->addColumn(new IcmsPersistableColumn('list_title', 'left', false, 'getAdminViewItemLink'));
+		$objectTable->addColumn(new IcmsPersistableColumn('list_completed', 'center', 100));
 
 		$objectTable->addIntroButton('addlist', 'list.php?op=mod', _AM_STASK_LIST_CREATE);
 
@@ -150,12 +153,12 @@ switch ($op) {
 
 		$objectTable->render();
 
-		smart_close_collapsable('createdlists');
+		icms_close_collapsable('createdlists');
 
 		break;
 }
 
-smart_modFooter();
-xoops_cp_footer();
+
+icms_cp_footer();
 
 ?>

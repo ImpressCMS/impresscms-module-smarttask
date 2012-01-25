@@ -9,8 +9,8 @@
 
 /**  Text edited by RJB on 3/10/07 */
 
-if (!defined("XOOPS_ROOT_PATH")) {
- 	die("XOOPS root path not defined");
+if (!defined("ICMS_ROOT_PATH")) {
+ 	die("ICMS root path not defined");
 }
 
 

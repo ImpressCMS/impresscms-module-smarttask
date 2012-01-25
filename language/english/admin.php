@@ -10,8 +10,8 @@
 * @version		$Id$
 */
 
-if (!defined("XOOPS_ROOT_PATH")) {
- 	die("XOOPS root path not defined");
+if (!defined("ICMS_ROOT_PATH")) {
+ 	die("ICMS root path not defined");
 }
 
 // general
@@ -58,5 +58,4 @@ define("_AM_STASK_LOG_MODIFIED", "The log was successfully modified.");
 define("_AM_STASK_LOG_CREATED", "The log has been successfully created.");
 define("_AM_STASK_LOG_VIEW", "Log info");
 define("_AM_STASK_LOG_VIEW_DSC", "Here is the info about this log.");
-
 ?>

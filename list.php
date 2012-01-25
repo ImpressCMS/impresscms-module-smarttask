@@ -2,28 +2,28 @@
 
 function editlist($list_listid = 0)
 {
-	global $smarttask_list_handler, $xoopsTpl;
+	global $smarttask_list_handler, $icmsTpl;
 
 	$listObj = $smarttask_list_handler->get($list_listid);
 	if (!$listObj->isNew()){
 		$sform = $listObj->getForm(_MD_STASK_LIST_EDIT, 'addlist');
-		$sform->assign($xoopsTpl, 'smarttask_list');
-		$xoopsTpl->assign('categoryPath', _MD_STASK_LIST_EDIT);
+		$sform->assign($icmsTpl, 'smarttask_list');
+		$icmsTpl->assign('categoryPath', _MD_STASK_LIST_EDIT);
 	} else {
 		$sform = $listObj->getForm(_MD_STASK_LIST_CREATE, 'addlist');
-		$sform->assign($xoopsTpl, 'smarttask_list');
-		$xoopsTpl->assign('categoryPath', _MD_STASK_LIST_CREATE);
+		$sform->assign($icmsTpl, 'smarttask_list');
+		$icmsTpl->assign('categoryPath', _MD_STASK_LIST_CREATE);
 	}
 }
 
 include_once('header.php');
 
 $xoopsOption['template_main'] = 'smarttask_list.html';
-include_once(XOOPS_ROOT_PATH . "/header.php");
-include_once SMARTOBJECT_ROOT_PATH."class/smartobjecttable.php";
+include_once(ICMS_ROOT_PATH . "/header.php");
 
-$smarttask_list_handler = xoops_getModuleHandler('list');
-$smarttask_item_handler = xoops_getModuleHandler('item');
+
+$smarttask_list_handler = icms_getModuleHandler('list');
+$smarttask_item_handler = icms_getModuleHandler('item');
 
 $op = '';
 
@@ -42,12 +42,12 @@ switch ($op) {
 		smarttask_checkPermission('list_add', 'list.php', _CO_SMARTTASK_LIST_ADD_NOPERM);
 
 		editlist($list_listid);
-		$xoopsTpl->assign('module_home', smart_getModuleName(true, true));
+		$icmsTpl->assign('module_home', $smarttaskModuleName);
 		break;
 
 	case "addlist":
-        include_once XOOPS_ROOT_PATH."/modules/smartobject/class/smartobjectcontroller.php";
-        $controller = new SmartObjectController($smarttask_list_handler);
+        include_once ICMS_ROOT_PATH . '/kernel/icmspersistablecontroller.php';
+        $controller = new IcmsPersistableController($smarttask_list_handler);
 		$controller->storeFromDefaultForm(_MD_STASK_LIST_CREATED, _MD_STASK_LIST_MODIFIED);
 
 		break;
@@ -55,11 +55,11 @@ switch ($op) {
 	case "del":
 	    smarttask_checkPermission('list_delete', 'list.php', _CO_SMARTTASK_LIST_DELETE_NOPERM);
 
-	    include_once XOOPS_ROOT_PATH."/modules/smartobject/class/smartobjectcontroller.php";
-        $controller = new SmartObjectController($smarttask_list_handler);
+	    include_once ICMS_ROOT_PATH . '/kernel/icmspersistablecontroller.php';
+        $controller = new IcmsPersistableController($smarttask_list_handler);
 		$controller->handleObjectDeletionFromUserSide();
-		$xoopsTpl->assign('module_home', smart_getModuleName(true, true));
-		$xoopsTpl->assign('categoryPath', _MD_STASK_LIST_DELETE);
+		$icmsTpl->assign('module_home', $smarttaskModuleName);
+		$icmsTpl->assign('categoryPath', _MD_STASK_LIST_DELETE);
 		break;
 
 	case "view" :
@@ -67,12 +67,12 @@ switch ($op) {
 		if (smarttask_checkPermission('list_add')) {
 			$view_actions_col[] = 'edit';
 		}
-		if (smarttask_checkPermission('list_delete')) {
+		/*if (smarttask_checkPermission('list_delete')) {
 			$view_actions_col[] = 'delete';
-		}
+		}*/
 
 		$listObj = $smarttask_list_handler->get($list_listid);
-		$xoopsTpl->assign('smarttask_list_view', $listObj->displaySingleObject(true, true, $view_actions_col, false));
+		$icmsTpl->assign('smarttask_list_view', $listObj->displaySingleObject(true, true, $view_actions_col, false));
 
 		$criteria = new CriteriaCompo();
 		$criteria->add(new Criteria('item_listid', $list_listid));
@@ -81,17 +81,26 @@ switch ($op) {
 		if (smarttask_checkPermission('list_add')) {
 			$table_actions_col[] = 'edit';
 		}
-		if (smarttask_checkPermission('list_delete')) {
+		/*if (smarttask_checkPermission('list_delete')) {
 			$table_actions_col[] = 'delete';
-		}
+		}*/
+		
+		require_once ICMS_ROOT_PATH . '/kernel/icmspersistabletable.php';
 
-		$objectTable = new SmartObjectTable($smarttask_item_handler, $criteria, $table_actions_col);
+		$objectTable = new IcmsPersistableTable($smarttask_item_handler, $criteria, $table_actions_col); 
 		$objectTable->isForUserSide();
-		$objectTable->addColumn(new SmartObjectColumn('item_deadline', 'left', 150));
-		$objectTable->addColumn(new SmartObjectColumn('item_title', 'left'));
-		$objectTable->addColumn(new SmartObjectColumn('item_owner_uid', 'left', 150));
-		$objectTable->addColumn(new SmartObjectColumn('item_completed', 'center', 100));
+		$objectTable->addColumn(new IcmsPersistableColumn('item_deadline', 'left', 150));
+		$objectTable->addColumn(new IcmsPersistableColumn('item_title', 'left'));
+		$objectTable->addColumn(new IcmsPersistableColumn('item_owner_uid', 'left', 150));
+		$objectTable->addColumn(new IcmsPersistableColumn('item_completed', 'center', 100));
 
+		$criteria_myself = new CriteriaCompo();
+		$criteria_myself->add(new Criteria('item_owner_uid', $xoopsUser->getVar('uid')));
+		$objectTable->addFilter(_CO_SMARTTASK_LIST_FILTER_MYSELF, array(
+									'key' => 'item_owner_uid',
+									'criteria' => $criteria_myself
+		));		
+		
 		$criteria_completed = new CriteriaCompo();
 		$criteria_completed->add(new Criteria('item_completed', 1));
 		$objectTable->addFilter(_CO_SMARTTASK_LIST_FILTER_COMPLETED, array(
@@ -110,10 +119,10 @@ switch ($op) {
 		if (smarttask_checkPermission('list_add')) {
 			$objectTable->addIntroButton('additem', 'item.php?op=mod&item_listid=' . $list_listid, _MD_STASK_ITEM_CREATE);
 		}
-		$xoopsTpl->assign('smarttask_list_items', $objectTable->fetch());
+		$icmsTpl->assign('smarttask_list_items', $objectTable->fetch());
 
-		$xoopsTpl->assign('module_home', smart_getModuleName(true, true));
-		$xoopsTpl->assign('categoryPath', $listObj->getVar('list_title'));
+		$icmsTpl->assign('module_home', $smarttaskModuleName);
+		$icmsTpl->assign('categoryPath', $listObj->getVar('list_title'));
 
 		break;
 
@@ -122,21 +131,23 @@ switch ($op) {
 		if (smarttask_checkPermission('list_add')) {
 			$table_actions_col[] = 'edit';
 		}
-		if (smarttask_checkPermission('list_delete')) {
+		/*if (smarttask_checkPermission('list_delete')) {
 			$table_actions_col[] = 'delete';
-		}
+		}*/
+		
+		require_once ICMS_ROOT_PATH . '/kernel/icmspersistabletable.php';
 
-		$objectTable = new SmartObjectTable($smarttask_list_handler, false, $table_actions_col);
+		$objectTable = new IcmsPersistableTable($smarttask_list_handler, false, $table_actions_col);
 		$objectTable->isForUserSide();
 
-		$objectTable->addColumn(new SmartObjectColumn('list_deadline', 'left', 150));
-		$objectTable->addColumn(new SmartObjectColumn('list_title', 'left'));
-		$objectTable->addColumn(new SmartObjectColumn('list_completed', 'center', 100));
+		$objectTable->addColumn(new IcmsPersistableColumn('list_deadline', 'left', 150));
+		$objectTable->addColumn(new IcmsPersistableColumn('list_title', 'left'));
+		$objectTable->addColumn(new IcmsPersistableColumn('list_completed', 'center', 100));
 
 
-		if (smarttask_checkPermission('list_add')) {
+		/*if (smarttask_checkPermission('list_add')) {
 			$objectTable->addIntroButton('addlist', 'list.php?op=mod', _MD_STASK_LIST_CREATE);
-		}
+		}*/
 
 		$objectTable->addQuickSearch(array('list_title', 'list_description'));
 
@@ -153,8 +164,8 @@ switch ($op) {
 									'criteria' => $criteria_not_completed
 		));
 
-		$xoopsTpl->assign('smarttask_lists', $objectTable->fetch());
-		$xoopsTpl->assign('module_home', smart_getModuleName(false, true));
+		$icmsTpl->assign('smarttask_lists', $objectTable->fetch());
+		$icmsTpl->assign('module_home', $smarttaskModuleName);
 
 		break;
 }

@@ -14,16 +14,16 @@ function smarttask_notify_iteminfo($category, $item_id)
 		define("SMARTPARTNER_DIRNAME", 'smarttask');
 	}
 
-	global $xoopsModule, $xoopsModuleConfig, $xoopsConfig;
+	global $icmsModule, $icmsModuleConfig, $icmsConfig;
 
-    if (empty($xoopsModule) || $xoopsModule->getVar('dirname') != SMARTPARTNER_DIRNAME) {
+    if (empty($icmsModule) || $icmsModule->getVar('dirname') != SMARTPARTNER_DIRNAME) {
         $module_handler = &xoops_gethandler('module');
         $module = &$module_handler->getByDirname(SMARTPARTNER_DIRNAME);
         $config_handler = &xoops_gethandler('config');
         $config = &$config_handler->getConfigsByCat(0, $module->getVar('mid'));
     } else {
-        $module = &$xoopsModule;
-        $config = &$xoopsModuleConfig;
+        $module = &$icmsModule;
+        $config = &$icmsModuleConfig;
     }
 
     if ($category == 'global') {
@@ -32,13 +32,13 @@ function smarttask_notify_iteminfo($category, $item_id)
         return $item;
     }
 
-    global $xoopsDB;
+    global $icmsDB;
 
     if ($category == 'item') {
         // Assume we have a valid partner id
-        $sql = 'SELECT question FROM ' . $xoopsDB->prefix('smarttask_partner') . ' WHERE id = ' . $item_id;
-        $result = $xoopsDB->query($sql); // TODO: error check
-        $result_array = $xoopsDB->fetchArray($result);
+        $sql = 'SELECT question FROM ' . $icmsDB->prefix('smarttask_partner') . ' WHERE id = ' . $item_id;
+        $result = $icmsDB->query($sql); // TODO: error check
+        $result_array = $icmsDB->fetchArray($result);
         $item['name'] = $result_array['title'];
         $item['url'] = XOOPS_URL . '/modules/' . $module->getVar('dirname') . '/partner.php?id=' . $item_id;
         return $item;

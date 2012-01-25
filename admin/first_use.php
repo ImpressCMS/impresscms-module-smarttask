@@ -17,15 +17,15 @@ if (isset($_POST['op']) && ($_POST['op'] == 'domoduleusage')) {
 	/**
 	 * @todo now we need to edit the xoops_version and configure config array accordingly to smart_getMeta('module_usage')
 	 */
-	redirect_header(XOOPS_URL . '/modules/system/admin.php?fct=modulesadmin&op=update&module=' . $xoopsModule->dirname(), 4, _AM_SSHOP_SELECT_MODULE_DONE_UPDATE_MODULE);
+	redirect_header(ICMS_URL . '/modules/system/admin.php?fct=modulesadmin&op=update&module=' . $icmsModule->dirname(), 4, _AM_SSHOP_SELECT_MODULE_DONE_UPDATE_MODULE);
 	exit;
 
 } else {
-	smart_xoops_cp_header();
+	icms_cp_header();
 
-	smart_adminMenu(0, _AM_SSHOP_FIRST_USE);
+	icms_adminMenu(0, _AM_SSHOP_FIRST_USE);
 
-	smart_collapsableBar('createdcategories', _AM_SSHOP_SELECT_MODULE_USE, _AM_SSHOP_SELECT_MODULE_USE_DSC);
+	icms_collapsableBar('createdcategories', _AM_SSHOP_SELECT_MODULE_USE, _AM_SSHOP_SELECT_MODULE_USE_DSC);
 
 	$form = new XoopsThemeForm(_AM_SSHOP_SELECT_MODULE_USE_FORM, "form", xoops_getenv('PHP_SELF'));
 	$form->setExtra( "enctype='multipart/form-data'" ) ;
@@ -59,11 +59,11 @@ if (isset($_POST['op']) && ($_POST['op'] == 'domoduleusage')) {
 	$form->display();
 
 	echo "<br />";
-	smart_close_collapsable('createdcategories');
+	icms_close_collapsable('createdcategories');
 	echo "<br>";
 
 	smartshop_modFooter();
-	xoops_cp_footer();
+	icms_cp_footer();
 
 }
 ?>

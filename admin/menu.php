@@ -10,38 +10,35 @@
 * @version		$Id$
 */
 
-$i = -1;
+global $icmsConfig;
 
-$i++;
-$adminmenu[$i]['title'] = _MI_STASK_LISTS;
-$adminmenu[$i]['link'] = "admin/list.php";
+$adminmenu[] = array(
+	"title" => _MI_STASK_LISTS,
+	"link" => "admin/list.php");
+$adminmenu[] = array(
+	"title" => _MI_STASK_ITEMS,
+	"link" => "admin/item.php");
+$adminmenu[] = array(
+	"title" => _MI_STASK_LOGS,
+	"link" => "admin/log.php");
 
-$i++;
-$adminmenu[$i]['title'] = _MI_STASK_ITEMS;
-$adminmenu[$i]['link'] = "admin/item.php";
 
-$i++;
-$adminmenu[$i]['title'] = _MI_STASK_LOGS;
-$adminmenu[$i]['link'] = "admin/log.php";
+$module = icms::handler("icms_module")->getByDirname(basename(dirname(dirname(__FILE__))));
 
-if (isset($xoopsModule)) {
+$headermenu[] = array(
+	"title" => _PREFERENCES,
+	"link" => "../../system/admin.php?fct=preferences&amp;op=showmod&amp;mod=" . $module->getVar("mid"));
+$headermenu[] = array(
+	"title" => _CO_ICMS_GOTOMODULE,
+	"link" => ICMS_URL . "/modules/smarttask/");
+$headermenu[] = array(
+	"title" => _CO_ICMS_UPDATE_MODULE,
+	"link" => ICMS_URL . "/modules/system/admin.php?fct=modulesadmin&amp;op=update&amp;module=" . basename(dirname(dirname(__FILE__))));
+$headermenu[] = array(
+	"title" => _MI_STASK_TEMPLATES,
+	"link" => '../../system/admin.php?fct=tplsets&amp;op=listtpl&amp;tplset=' . $icmsConfig['template_set'] . '&amp;moddir=' . basename(dirname(dirname(__FILE__))));
+$headermenu[] = array(
+	"title" => _MODABOUT_ABOUT,
+	"link" => ICMS_URL . "/modules/smarttask/admin/about.php");
 
-	$i = -1;
-
-	$i++;
-	$headermenu[$i]['title'] = _PREFERENCES;
-	$headermenu[$i]['link'] = '../../system/admin.php?fct=preferences&amp;op=showmod&amp;mod=' . $xoopsModule->getVar('mid');
-
-	$i++;
-	$headermenu[$i]['title'] = _CO_SOBJECT_GOTOMODULE;
-	$headermenu[$i]['link'] = SMARTTASK_URL;
-
-	$i++;
-	$headermenu[$i]['title'] = _CO_SOBJECT_UPDATE_MODULE;
-	$headermenu[$i]['link'] = XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin&op=update&module=" . $xoopsModule->getVar('dirname');
-
-	$i++;
-	$headermenu[$i]['title'] = _AM_SOBJECT_ABOUT;
-	$headermenu[$i]['link'] = SMARTTASK_URL . "admin/about.php";
-}
-?>
+unset($module_handler);

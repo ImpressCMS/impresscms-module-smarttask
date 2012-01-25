@@ -6,14 +6,14 @@
 * Author: The SmartFactory <www.smartfactory.ca>
 * Licence: GNU
 */
-if (!defined("XOOPS_ROOT_PATH")) {
-	die("XOOPS root path not defined");
+if (!defined("ICMS_ROOT_PATH")) {
+	die("ICMS root path not defined");
 }
 
 function smarttask_checkPermission($permission, $redirectUrl=false, $redirectMsg=false) {
-	global $xoopsModuleConfig, $xoopsUser, $smart_previous_page;
+	global $xoopsModuleConfig, $icmsUser, $smart_previous_page;
 
-	$user_groups = $xoopsUser->getGroups();
+	$user_groups = $icmsUser->getGroups();
 
 	$smarttask_team_groups = $xoopsModuleConfig['team_groups'];
 	switch ($permission) {

@@ -1,7 +1,7 @@
 <?php
 
 /**
-* $Id$
+* $Id: blocks.php 796 2008-02-04 22:01:02Z malanciault $
 * Module: SmartTask
 * Author: The SmartFactory <www.smartfactory.ca>
 * Licence: GNU
@@ -9,16 +9,16 @@
 
 /**  not edited by RJB on 3/10/07 */
 
-if (!defined("ICMS_ROOT_PATH")) {
- 	die("ICMS root path not defined");
+if (!defined("XOOPS_ROOT_PATH")) {
+ 	die("ImpressCMS Root Pfad nicht definiert");
 }
 
-define("_MB_STASK_ALLCAT", "All categories");
+define("_MB_STASK_ALLCAT", "Alle Projekte");
 define("_MB_STASK_AUTO_LAST_ITEMS", "Automatically display last item(s)?");
-define("_MB_STASK_CATEGORY", "Category");
-define("_MB_STASK_CHARS", "Length of the title");
-define("_MB_STASK_COMMENTS", "Comment(s)");
-define("_MB_STASK_DATE", "Published date");
+define("_MB_STASK_CATEGORY", "Projekt");
+define("_MB_STASK_CHARS", "Länge des Titels");
+define("_MB_STASK_COMMENTS", "Kommentar(e)");
+define("_MB_STASK_DATE", "Erschienen am");
 define("_MB_STASK_DISP", "Display");
 define("_MB_STASK_DISPLAY_CATEGORY", "Display the category name?");
 define("_MB_STASK_DISPLAY_COMMENTS", "Display comment count?");
@@ -31,10 +31,10 @@ define("_MB_STASK_HITS", "Number of hits");
 define("_MB_STASK_ITEMS", "Articles");
 define("_MB_STASK_LAST_ITEMS_COUNT", "If yes, how many items to display?");
 define("_MB_STASK_LENGTH", " characters");
-define("_MB_STASK_ORDER", "Display order");
-define("_MB_STASK_POSTEDBY", "Published by");
-define("_MB_STASK_READMORE", "Read more...");
-define("_MB_STASK_READS", "reads");
+define("_MB_STASK_ORDER", "Reihenfolge");
+define("_MB_STASK_POSTEDBY", "Veröffentlicht von");
+define("_MB_STASK_READMORE", "weiterlesen...");
+define("_MB_STASK_READS", "gelesen");
 define("_MB_STASK_SELECT_ITEMS", "If no, select the articles to be displayed :");
 define("_MB_STASK_SELECTCAT", "Display the articles of :");
 define("_MB_STASK_VISITITEM", "Visit the");
@@ -49,14 +49,13 @@ define("_MB_STASK_SHOWITEMS", "Show Items");
 //--/bd
 define("_MB_STASK_STATUS_1", "Offline");
 define("_MB_STASK_STATUS_3", "Online");
-define("_MB_STASK_STATUS_0", "Expired");
+define("_MB_STASK_STATUS_0", "Abgelaufen");
 define("_MB_STASK_STATUS_2", "Submitted");
 define("_MB_STASK_STATUS_4", "Sold");
-define("_MB_STASK_SEARCH","Search");
-define("_MB_STASK_ADVS","Advanced Search");
+define("_MB_STASK_SEARCH","Suchen");
+define("_MB_STASK_ADVS","Erweiterte Suche");
 define("_MB_STASK_CHOOSE","Choose your category");
 define("_MB_STASK_SUBMIT_BL_FORMAT","Display mode");
 define("_MB_STASK_LIST","List");
 define("_MB_STASK_SELECT","Select");
-
 ?>

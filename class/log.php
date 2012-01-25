@@ -4,22 +4,20 @@
 *
 * @copyright	The SmartFactory http://www.smartfactory.ca
 * @license		http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU General Public License (GPL)
-* @since		1.0
+* @since		1.ICMS
 * @package		SmartTask
 * @author		marcan <marcan@smartfactory.ca>
 * @version		$Id$
 */
 
-if (!defined("XOOPS_ROOT_PATH")) {
-    die("XOOPS root path not defined");
+if (!defined("ICMS_ROOT_PATH")) {
+    die("ICMS root path not defined");
 }
 
-include_once XOOPS_ROOT_PATH."/modules/smartobject/class/smartobject.php";
+class SmarttaskLog extends icms_ipf_Object {
 
-class SmarttaskLog extends SmartObject {
-
-    function SmarttaskLog(&$handler) {
-    	$this->SmartObject($handler);
+    function __construct(&$handler) {
+    	$this->IcmsPersistableObject($handler);
 
         $this->quickInitVar('log_logid', XOBJ_DTYPE_INT, true);
         $this->quickInitVar('log_itemid', XOBJ_DTYPE_INT, true);
@@ -43,12 +41,13 @@ class SmarttaskLog extends SmartObject {
     }
 
     function log_itemid() {
-		$smart_registry = SmartObjectsRegistry::getInstance();
+		require_once ICMS_ROOT_PATH . '/kernel/icmspersistableregistry.php';
+		$smart_registry = IcmsPersistableRegistry::getInstance();
     	$ret = $this->getVar('log_itemid', 'e');
 		$obj = $smart_registry->getSingleObject('item', $ret, 'smarttask');
 
     	if (!$obj->isNew()) {
-    		if (defined('XOOPS_CPFUNC_LOADED')) {
+    		if (defined('ICMS_CPFUNC_LOADED')) {
     			$ret = $obj->getAdminViewItemLink();
     		} else {
     			$ret = $obj->getItemLink();
@@ -58,13 +57,17 @@ class SmarttaskLog extends SmartObject {
     }
 
     function log_uid() {
-        return smart_getLinkedUnameFromId($this->getVar('log_uid', 'e'), false, false, false);
+		$uid = intval($this->getVar('log_uid', 'e'));
+		if ($uid === 0) return '-';
+		$user_handler = &xoops_getHandler('user');
+		$user = &$user_handler->get($uid);
+        return is_object($user)?$user->getVar('uname'):'???';	       
     }
 }
-class SmarttaskLogHandler extends SmartPersistableObjectHandler {
+class SmarttaskLogHandler extends IcmsPersistableObjectHandler {
 
     function SmarttaskLogHandler($db) {
-        $this->SmartPersistableObjectHandler($db, 'log', 'log_logid', 'log_date', '', 'smarttask');
+        $this->IcmsPersistableObjectHandler($db, 'log', 'log_logid', 'log_date', '', 'smarttask');
     }
 
     function deleteAllLogsFromItem($item_itemid) {
