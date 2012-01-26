@@ -34,13 +34,13 @@ function editlog($log_logid = 0)
 }
 
 
-include_once('header.php');
+include_once 'header.php';
 
 $xoopsOption['template_main'] = 'smarttask_log.html';
-include_once(ICMS_ROOT_PATH . "/header.php");
+include_once ICMS_ROOT_PATH . "/header.php";
 
-$smarttask_log_handler = icms_getModuleHandler('log', basename(dirname(dirname(__FILE__))), "smarttask");
-$smarttask_item_handler = icms_getModuleHandler('item', basename(dirname(dirname(__FILE__))), "smarttask");
+$smarttask_log_handler = icms_getModuleHandler('log');
+$smarttask_item_handler = icms_getModuleHandler('item');
 
 $op = '';
 
