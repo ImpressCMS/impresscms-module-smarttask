@@ -70,3 +70,4 @@ define("_CO_SMARTTASK_LOG_DELETE_NOPERM", "Sie haben nicht die erfoderliche Bere
 // 1.1 alpha changes
 define('_CO_SMARTTASK_LIST_FILTER_ANY', '(Alle)');
 define('_CO_SMARTTASK_LIST_FILTER_MYSELF', 'Meine');
+define('_CO_SOBJECT_EDITING', 'Bearbeiten');

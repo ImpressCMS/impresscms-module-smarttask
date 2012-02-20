@@ -70,3 +70,4 @@ define("_CO_SMARTTASK_LOG_DELETE_NOPERM", "You do not have permission to delete 
 // 1.1 alpha changes
 define('_CO_SMARTTASK_LIST_FILTER_ANY', '(any)');
 define('_CO_SMARTTASK_LIST_FILTER_MYSELF', 'My');
+define('_CO_SOBJECT_EDITING', 'Edit');
