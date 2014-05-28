@@ -84,23 +84,26 @@ switch ($op) {
 		/*if (smarttask_checkPermission('list_delete')) {
 			$table_actions_col[] = 'delete';
 		}*/
-		
+
 		require_once ICMS_ROOT_PATH . '/kernel/icmspersistabletable.php';
 
-		$objectTable = new IcmsPersistableTable($smarttask_item_handler, $criteria, $table_actions_col); 
+		$objectTable = new IcmsPersistableTable($smarttask_item_handler, $criteria, $table_actions_col);
 		$objectTable->isForUserSide();
 		$objectTable->addColumn(new IcmsPersistableColumn('item_deadline', 'left', 150));
 		$objectTable->addColumn(new IcmsPersistableColumn('item_title', 'left'));
 		$objectTable->addColumn(new IcmsPersistableColumn('item_owner_uid', 'left', 150));
 		$objectTable->addColumn(new IcmsPersistableColumn('item_completed', 'center', 100));
 
+		$objectTable->setDefaultSort('item_deadline');
+		$objectTable->setDefaultOrder('ASC');
+
 		$criteria_myself = new CriteriaCompo();
 		$criteria_myself->add(new Criteria('item_owner_uid', $xoopsUser->getVar('uid')));
 		$objectTable->addFilter(_CO_SMARTTASK_LIST_FILTER_MYSELF, array(
 									'key' => 'item_owner_uid',
 									'criteria' => $criteria_myself
-		));		
-		
+		));
+
 		$criteria_completed = new CriteriaCompo();
 		$criteria_completed->add(new Criteria('item_completed', 1));
 		$objectTable->addFilter(_CO_SMARTTASK_LIST_FILTER_COMPLETED, array(
@@ -134,7 +137,7 @@ switch ($op) {
 		/*if (smarttask_checkPermission('list_delete')) {
 			$table_actions_col[] = 'delete';
 		}*/
-		
+
 		require_once ICMS_ROOT_PATH . '/kernel/icmspersistabletable.php';
 
 		$objectTable = new IcmsPersistableTable($smarttask_list_handler, false, $table_actions_col);
@@ -143,6 +146,9 @@ switch ($op) {
 		$objectTable->addColumn(new IcmsPersistableColumn('list_deadline', 'left', 150));
 		$objectTable->addColumn(new IcmsPersistableColumn('list_title', 'left'));
 		$objectTable->addColumn(new IcmsPersistableColumn('list_completed', 'center', 100));
+
+		$objectTable->setDefaultSort('list_deadline');
+		$objectTable->setDefaultOrder('ASC');
 
 
 		/*if (smarttask_checkPermission('list_add')) {
