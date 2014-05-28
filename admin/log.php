@@ -30,6 +30,7 @@ function editlog($showmenu = false, $log_logid = 0, $parentid =0)
 		$sform->display();
 		icms_close_collapsable('logedit');
 	} else {
+		$logObj->setVar('log_uid', icms::$user->getVar('uid'));
 		if ($showmenu) {
 			icms_adminMenu(2, _AM_STASK_LOGS );
 		}
@@ -105,6 +106,9 @@ switch ($op) {
 		$objectTable->addColumn(new IcmsPersistableColumn('log_itemid'));
 		$objectTable->addColumn(new IcmsPersistableColumn('log_uid', 'left', 150));
 
+		$objectTable->setDefaultSort('log_date');
+		$objectTable->setDefaultOrder('ASC');
+
 		$objectTable->addIntroButton('addlog', 'log.php?op=mod', _AM_STASK_LOG_CREATE);
 
 		$objectTable->addQuickSearch(array('log_message'));
@@ -118,5 +122,3 @@ switch ($op) {
 
 
 icms_cp_footer();
-
-?>

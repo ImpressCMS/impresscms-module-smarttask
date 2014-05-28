@@ -75,7 +75,7 @@ switch ($op) {
 		$listObj = $smarttask_list_handler->get($list_listid);
 
 		require_once ICMS_ROOT_PATH . '/kernel/icmspersistabletable.php';
-		
+
 		icms_cp_header();
 		icms_adminMenu(0, _AM_STASK_LIST_VIEW . ' > ' . $listObj->getVar('list_title'));
 
@@ -120,7 +120,7 @@ switch ($op) {
 		break;
 
 	default:
-	
+
 		require_once ICMS_ROOT_PATH . '/kernel/icmspersistabletable.php';
 
 		icms_cp_header();
@@ -132,6 +132,9 @@ switch ($op) {
 		$objectTable->addColumn(new IcmsPersistableColumn('list_deadline', 'left', 150));
 		$objectTable->addColumn(new IcmsPersistableColumn('list_title', 'left', false, 'getAdminViewItemLink'));
 		$objectTable->addColumn(new IcmsPersistableColumn('list_completed', 'center', 100));
+
+		$objectTable->setDefaultSort('list_deadline');
+		$objectTable->setDefaultOrder('ASC');
 
 		$objectTable->addIntroButton('addlist', 'list.php?op=mod', _AM_STASK_LIST_CREATE);
 

@@ -88,7 +88,7 @@ switch ($op) {
 		icms_close_collapsable('itemview');
 
 		icms_collapsableBar('itemview_logs', _AM_STASK_LOGS, _AM_STASK_LOGS_IN_ITEM_DSC);
-		
+
 		include_once ICMS_ROOT_PATH."/kernel/icmspersistabletable.php";
 
 		$criteria = new CriteriaCompo();
@@ -116,13 +116,16 @@ switch ($op) {
 		icms_collapsableBar('createditems', _AM_STASK_ITEMS, _AM_STASK_ITEMS_DSC);
 
 		include_once ICMS_ROOT_PATH."/kernel/icmspersistabletable.php";
-		
+
 		$objectTable = new IcmsPersistableTable($smarttask_item_handler);
-		$objectTable->addColumn(new IcmsPersistableColumn('item_title', 'left', 150));
-		$objectTable->addColumn(new IcmsPersistableColumn('item_listid', 'left', false, 'getAdminViewItemLink'));
+		$objectTable->addColumn(new IcmsPersistableColumn('item_deadline', 'left', 150 ));
+		$objectTable->addColumn(new IcmsPersistableColumn('item_title', 'left', false, 'getAdminViewItemLink'));
+		$objectTable->addColumn(new IcmsPersistableColumn('item_listid', 'left', 150 ));
 		$objectTable->addColumn(new IcmsPersistableColumn('item_owner_uid', 'left', 150));
 		$objectTable->addColumn(new IcmsPersistableColumn('item_completed', 'center', 100));
 
+		$objectTable->setDefaultSort('item_deadline');
+		$objectTable->setDefaultOrder('ASC');
 
 		$criteria_completed = new CriteriaCompo();
 		$criteria_completed->add(new Criteria('item_completed', 1));
