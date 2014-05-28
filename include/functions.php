@@ -1,5 +1,4 @@
 <?php
-
 /**
 * $Id: functions.php 20145 2010-09-15 13:06:09Z mekdrop $
 * Module: SmartTask
@@ -10,12 +9,16 @@ if (!defined("ICMS_ROOT_PATH")) {
 	die("ICMS root path not defined");
 }
 
-function smarttask_checkPermission($permission, $redirectUrl=false, $redirectMsg=false) {
-	global $xoopsModuleConfig, $icmsUser, $smart_previous_page;
+function smarttask_checkPermission($permission, $redirectUrl = FALSE, $redirectMsg = FALSE) {
+	global $icmsModuleConfig, $smart_previous_page;
 
-	$user_groups = $icmsUser->getGroups();
+	if (is_object(icms::$user)) {
+		$user_groups = icms::$user->getGroups();
+	} else {
+		$user_groups = array(ICMS_GROUP_ANONYMOUS);
+	}
 
-	$smarttask_team_groups = $xoopsModuleConfig['team_groups'];
+	$smarttask_team_groups = $icmsModuleConfig['team_groups'];
 	switch ($permission) {
 		case 'list_add':
 		case 'list_delete':
@@ -24,7 +27,7 @@ function smarttask_checkPermission($permission, $redirectUrl=false, $redirectMsg
 		case 'log_add':
 		case 'log_delete':
 			if (count(array_intersect($smarttask_team_groups, $user_groups)) > 0) {
-				return true;
+				return TRUE;
 			} else {
 				if ($redirectUrl) {
 					redirect_header($redirectUrl, 3, $redirectMsg);
@@ -32,6 +35,5 @@ function smarttask_checkPermission($permission, $redirectUrl=false, $redirectMsg
 			}
 		break;
 	}
-	return false;
+	return FALSE;
 }
-?>
