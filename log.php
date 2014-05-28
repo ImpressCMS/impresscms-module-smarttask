@@ -1,7 +1,6 @@
 <?php
 
-function editlog($log_logid = 0)
-{
+function editlog($log_logid = 0) {
 	global $smarttask_log_handler, $icmsTpl, $icmsUser;
 
 	if (!is_object($icmsUser)) {
@@ -33,25 +32,32 @@ function editlog($log_logid = 0)
 	}
 }
 
+/* set get and post filters before including admin_header, if not strings */
+$filter_get = array(
+		'op' => 'str',
+		'list_logid' => 'int',
+);
+
+$filter_post = array(
+		'op' => 'str',
+		'list_logid' => 'int',
+);
+
+/* set default values for variables */
+$op = '';
+$log_logid = 0;
 
 include_once 'header.php';
+
+if (!$op && $log_logid > 0) {
+	$op = 'view';
+}
 
 $xoopsOption['template_main'] = 'smarttask_log.html';
 include_once ICMS_ROOT_PATH . "/header.php";
 
 $smarttask_log_handler = icms_getModuleHandler('log');
 $smarttask_item_handler = icms_getModuleHandler('item');
-
-$op = '';
-
-if (isset($_GET['op'])) $op = $_GET['op'];
-if (isset($_POST['op'])) $op = $_POST['op'];
-
-$log_logid = isset($_GET['log_logid']) ? intval($_GET['log_logid']) : 0 ;
-
-if (!$op && $log_logid > 0) {
-	$op = 'view';
-}
 
 switch ($op) {
 	case "mod":
@@ -103,4 +109,3 @@ switch ($op) {
 }
 
 include_once("footer.php");
-?>

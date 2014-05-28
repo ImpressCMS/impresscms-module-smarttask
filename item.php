@@ -21,8 +21,26 @@ function edititem($item_itemid = 0)
 		$icmsTpl->assign('categoryPath', _MD_STASK_ITEM_CREATE);
 	}
 }
+/* set get and post filters before including admin_header, if not strings */
+$filter_get = array(
+		'op' => 'str',
+		'item_itemid' => 'int',
+);
+
+$filter_post = array(
+		'op' => 'str',
+		'item_itemid' => 'int',
+);
+
+/* set default values for variables */
+$op = '';
+$item_itemid = 0;
 
 include_once('header.php');
+
+if (!$op && $item_itemid > 0) {
+	$op = 'view';
+}
 
 $xoopsOption['template_main'] = 'smarttask_item.html';
 include_once(ICMS_ROOT_PATH . "/header.php");
@@ -31,17 +49,6 @@ include_once(ICMS_ROOT_PATH . "/header.php");
 $smarttask_item_handler = icms_getModuleHandler('item');
 $smarttask_log_handler = icms_getModuleHandler('log');
 $smarttask_list_handler = icms_getModuleHandler('list');
-
-$op = '';
-
-if (isset($_GET['op'])) $op = $_GET['op'];
-if (isset($_POST['op'])) $op = $_POST['op'];
-
-$item_itemid = isset($_GET['item_itemid']) ? intval($_GET['item_itemid']) : 0 ;
-
-if (!$op && $item_itemid > 0) {
-	$op = 'view';
-}
 
 switch ($op) {
 	case "mod":
@@ -90,7 +97,7 @@ switch ($op) {
 		/*if (smarttask_checkPermission('log_delete')) {
 			$table_actions_col[] = 'delete';
 		}*/
-		
+
 		include_once ICMS_ROOT_PATH."/kernel/icmspersistabletable.php";
 
 		$objectTable = new IcmsPersistableTable($smarttask_log_handler, $criteria, $table_actions_col);
@@ -118,4 +125,3 @@ switch ($op) {
 }
 
 include_once("footer.php");
-?>

@@ -1,7 +1,6 @@
 <?php
 
-function editlist($list_listid = 0)
-{
+function editlist($list_listid = 0) {
 	global $smarttask_list_handler, $icmsTpl;
 
 	$listObj = $smarttask_list_handler->get($list_listid);
@@ -16,25 +15,32 @@ function editlist($list_listid = 0)
 	}
 }
 
-include_once('header.php');
+/* set get and post filters before including admin_header, if not strings */
+$filter_get = array(
+	'op' => 'str',
+	'list_listid' => 'int',
+);
 
-$xoopsOption['template_main'] = 'smarttask_list.html';
-include_once(ICMS_ROOT_PATH . "/header.php");
+$filter_post = array(
+		'op' => 'str',
+		'list_listid' => 'int',
+);
 
-
-$smarttask_list_handler = icms_getModuleHandler('list');
-$smarttask_item_handler = icms_getModuleHandler('item');
-
+/* set default values for variables */
 $op = '';
+$list_listid = 0;
 
-if (isset($_GET['op'])) $op = $_GET['op'];
-if (isset($_POST['op'])) $op = $_POST['op'];
-
-$list_listid = isset($_GET['list_listid']) ? intval($_GET['list_listid']) : 0 ;
+include_once('header.php');
 
 if (!$op && $list_listid > 0) {
 	$op = 'view';
 }
+
+$xoopsOption['template_main'] = 'smarttask_list.html';
+include_once(ICMS_ROOT_PATH . "/header.php");
+
+$smarttask_list_handler = icms_getModuleHandler('list');
+$smarttask_item_handler = icms_getModuleHandler('item');
 
 switch ($op) {
 	case "mod":
@@ -97,12 +103,16 @@ switch ($op) {
 		$objectTable->setDefaultSort('item_deadline');
 		$objectTable->setDefaultOrder('ASC');
 
-		$criteria_myself = new CriteriaCompo();
-		$criteria_myself->add(new Criteria('item_owner_uid', $xoopsUser->getVar('uid')));
-		$objectTable->addFilter(_CO_SMARTTASK_LIST_FILTER_MYSELF, array(
-									'key' => 'item_owner_uid',
-									'criteria' => $criteria_myself
-		));
+
+		if (is_object(icms::$user)) {
+			$criteria_myself = new CriteriaCompo();
+			$criteria_myself->add(new Criteria('item_owner_uid', icms::$user->getVar('uid')));
+
+			$objectTable->addFilter(_CO_SMARTTASK_LIST_FILTER_MYSELF, array(
+										'key' => 'item_owner_uid',
+										'criteria' => $criteria_myself
+			));
+		}
 
 		$criteria_completed = new CriteriaCompo();
 		$criteria_completed->add(new Criteria('item_completed', 1));
@@ -177,4 +187,3 @@ switch ($op) {
 }
 
 include_once("footer.php");
-?>

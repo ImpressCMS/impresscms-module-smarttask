@@ -15,10 +15,10 @@ function editlog($showmenu = false, $log_logid = 0, $parentid =0)
 	global $smarttask_log_handler;
 
 	$logObj = $smarttask_log_handler->get($log_logid);
-
+/*
 	$log_itemid = isset($_GET['log_itemid']) ? intval($_GET['log_itemid']) : 0;
 	$logObj->setVar('log_itemid', $log_itemid);
-
+*/
 	if (!$logObj->isNew()){
 
 		if ($showmenu) {
@@ -35,6 +35,7 @@ function editlog($showmenu = false, $log_logid = 0, $parentid =0)
 		}
 		icms_collapsableBar('logcreate', _AM_STASK_LOG_CREATE, _AM_STASK_LOG_CREATE_INFO);
 		$sform = $logObj->getForm(_AM_STASK_LOG_CREATE, 'addlog');
+
 		$sform->display();
 		icms_close_collapsable('logcreate');
 	}
@@ -98,7 +99,7 @@ switch ($op) {
 		icms_collapsableBar('createdlogs', _AM_STASK_LOGS, _AM_STASK_LOGS_DSC);
 
 		include_once ICMS_ROOT_PATH."/kernel/icmspersistabletable.php";
-		
+
 		$objectTable = new IcmsPersistableTable($smarttask_log_handler);
 		$objectTable->addColumn(new IcmsPersistableColumn('log_date', 'left', 150));
 		$objectTable->addColumn(new IcmsPersistableColumn('log_itemid'));

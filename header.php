@@ -19,4 +19,12 @@ icms_loadLanguageFile(SMARTTASK_DIRNAME, 'common');
 
 include_once SMARTTASK_ROOT_PATH . "include/functions.php";
 
-?>
+/* filter the user input */
+if (!empty($_GET)) {
+	$clean_GET = icms_core_DataFilter::checkVarArray($_GET, $filter_get, FALSE);
+	extract($clean_GET);
+}
+if (!empty($_POST)) {
+	$clean_POST = icms_core_DataFilter::checkVarArray($_POST, $filter_post, FALSE);
+	extract($clean_POST);
+}
