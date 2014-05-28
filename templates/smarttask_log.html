@@ -1,0 +1,21 @@
+<{includeq file='db:smarttask_header.html'}>
+
+<{if $smarttask_logs}>
+	<h1><{$smarty.const._MD_SMARTTASK_LISTS}></h1>
+	
+	<div><{$smarttask_logs}></div>
+<{/if}>
+
+<{if $smarttask_log_view}>
+	<{$smarttask_log_view}>
+<{/if}>
+
+<{if $smarttask_log}>
+	<{includeq file='db:system_common_form.html' form=$smarttask_log}>
+<{/if}>
+
+<{if $icmspersistable_delete_confirm}>
+	<{$icmspersistable_delete_confirm}>
+<{/if}>
+
+<{includeq file='db:smarttask_footer.html'}>
