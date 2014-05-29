@@ -107,6 +107,9 @@ switch ($op) {
 		$objectTable->addColumn(new IcmsPersistableColumn('log_message'));
 		$objectTable->addColumn(new IcmsPersistableColumn('log_uid', 'left', 150));
 
+		$objectTable->setDefaultSort('log_date');
+		$objectTable->setDefaultOrder('DESC');
+
 		if (smarttask_checkPermission('log_add')) {
 			$objectTable->addIntroButton('addlog', 'log.php?op=mod&log_itemid=' . $item_itemid, _MD_STASK_LOG_CREATE);
 		}

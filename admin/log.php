@@ -107,7 +107,7 @@ switch ($op) {
 		$objectTable->addColumn(new IcmsPersistableColumn('log_uid', 'left', 150));
 
 		$objectTable->setDefaultSort('log_date');
-		$objectTable->setDefaultOrder('ASC');
+		$objectTable->setDefaultOrder('DESC');
 
 		$objectTable->addIntroButton('addlog', 'log.php?op=mod', _AM_STASK_LOG_CREATE);
 
