@@ -16,10 +16,10 @@ function edititem($showmenu = false, $item_itemid = 0, $parentid =0)
 	global $smarttask_item_handler;
 
 	$itemObj = $smarttask_item_handler->get($item_itemid);
-
+/*
 	$item_listid = isset($_GET['item_listid']) ? intval($_GET['item_listid']) : 0;
 	$itemObj->setVar('item_listid', $item_listid);
-
+*/
 	if (!$itemObj->isNew()){
 
 		if ($showmenu) {
