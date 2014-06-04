@@ -8,12 +8,21 @@
 */
 
 define('SMARTTASK_FIRST_USE_PAGE', true);
+/* set get and post filters before including admin_header, if not strings */
+$filter_get = array();
+
+$filter_post = array(
+		'op' => 'str',
+		'module_use' => 'str',
+);
+
+/* set default values for variables */
 
 include_once("admin_header.php");
 
-if (isset($_POST['op']) && ($_POST['op'] == 'domoduleusage')) {
+if (isset($op) && $op == 'domoduleusage') {
 	// Set the preferences accoridng to module usage selected
-	smart_SetMeta('module_usage', $_POST['module_use']);
+	smart_SetMeta('module_usage', $module_use);
 	/**
 	 * @todo now we need to edit the xoops_version and configure config array accordingly to smart_getMeta('module_usage')
 	 */
@@ -66,4 +75,3 @@ if (isset($_POST['op']) && ($_POST['op'] == 'domoduleusage')) {
 	icms_cp_footer();
 
 }
-?>

@@ -10,6 +10,21 @@
 * @version		$Id: log.php 23265 2012-01-25 07:50:44Z sato-san $
 */
 
+/* set get and post filters before including admin_header, if not strings */
+$filter_get = array(
+		'op' => 'str',
+		'list_logid' => 'int',
+);
+
+$filter_post = array(
+		'op' => 'str',
+		'list_logid' => 'int',
+);
+
+/* set default values for variables */
+$op = '';
+$log_logid = 0;
+
 function editlog($showmenu = false, $log_logid = 0, $parentid =0)
 {
 	global $smarttask_log_handler;
@@ -45,13 +60,6 @@ function editlog($showmenu = false, $log_logid = 0, $parentid =0)
 include_once("admin_header.php");
 
 $smarttask_log_handler = icms_getModuleHandler('log', basename(dirname(dirname(__FILE__))), "smarttask");
-
-$op = '';
-
-if (isset($_GET['op'])) $op = $_GET['op'];
-if (isset($_POST['op'])) $op = $_POST['op'];
-
-$log_logid = isset($_GET['log_logid']) ? intval($_GET['log_logid']) : 0 ;
 
 switch ($op) {
 	case "mod":

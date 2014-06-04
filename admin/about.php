@@ -1,5 +1,4 @@
 <?php
-
 /**
 * About page of the module
 *
@@ -10,6 +9,13 @@
 * @author		marcan <marcan@smartfactory.ca>
 * @version		$Id: about.php 23265 2012-01-25 07:50:44Z sato-san $
 */
+
+/* set get and post filters before including admin_header, if not strings */
+$filter_get = array();
+
+$filter_post = array();
+
+/* set default values for variables */
 
 include_once "admin_header.php";
 $aboutObj = new icms_ipf_About();

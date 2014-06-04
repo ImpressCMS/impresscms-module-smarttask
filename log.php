@@ -1,5 +1,23 @@
 <?php
 
+/* set get and post filters before including admin_header, if not strings */
+$filter_get = array(
+		'op' => 'str',
+		'list_logid' => 'int',
+);
+
+$filter_post = array(
+		'op' => 'str',
+		'list_logid' => 'int',
+);
+
+/* set default values for variables */
+$op = '';
+$log_logid = 0;
+
+include_once 'header.php';
+
+
 function editlog($log_logid = 0) {
 	global $smarttask_log_handler, $icmsTpl, $icmsUser;
 
@@ -19,7 +37,6 @@ function editlog($log_logid = 0) {
 		$sform->assign($icmsTpl, 'smarttask_log');
 		$icmsTpl->assign('categoryPath', _MD_STASK_LOG_EDIT);
 	} else {
-		$log_itemid = isset($_GET['log_itemid']) ? intval($_GET['log_itemid']) : 0;
 		$smarttask_item_handler = icms_getModuleHandler('item', basename(dirname(dirname(__FILE__))), "smarttask");
 		$itemObj = $smarttask_item_handler->get($log_itemid);
 		if ($itemObj->isNew()) {
@@ -31,23 +48,6 @@ function editlog($log_logid = 0) {
 		$icmsTpl->assign('categoryPath', _MD_STASK_LOG_CREATE);
 	}
 }
-
-/* set get and post filters before including admin_header, if not strings */
-$filter_get = array(
-		'op' => 'str',
-		'list_logid' => 'int',
-);
-
-$filter_post = array(
-		'op' => 'str',
-		'list_logid' => 'int',
-);
-
-/* set default values for variables */
-$op = '';
-$log_logid = 0;
-
-include_once 'header.php';
 
 if (!$op && $log_logid > 0) {
 	$op = 'view';

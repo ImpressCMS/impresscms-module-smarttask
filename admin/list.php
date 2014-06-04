@@ -1,5 +1,4 @@
 <?php
-
 /**
 * List, add, edit and delete list objects
 *
@@ -10,6 +9,23 @@
 * @author		marcan <marcan@smartfactory.ca>
 * @version		$Id: list.php 23265 2012-01-25 07:50:44Z sato-san $
 */
+
+/* set get and post filters before including admin_header, if not strings */
+$filter_get = array(
+		'op' => 'str',
+		'list_listid' => 'int',
+);
+
+$filter_post = array(
+		'op' => 'str',
+		'list_listid' => 'int',
+);
+
+/* set default values for variables */
+$op = '';
+$list_listid = 0;
+
+include_once("admin_header.php");
 
 function editlist($showmenu = false, $list_listid = 0, $parentid =0)
 {
@@ -37,17 +53,8 @@ function editlist($showmenu = false, $list_listid = 0, $parentid =0)
 	}
 }
 
-include_once("admin_header.php");
-
 $smarttask_list_handler = icms_getModuleHandler('list', basename(dirname(dirname(__FILE__))), "smarttask");
 $smarttask_item_handler = icms_getModuleHandler('item', basename(dirname(dirname(__FILE__))), "smarttask");
-
-$op = '';
-
-if (isset($_GET['op'])) $op = $_GET['op'];
-if (isset($_POST['op'])) $op = $_POST['op'];
-
-$list_listid = isset($_GET['list_listid']) ? intval($_GET['list_listid']) : 0 ;
 
 switch ($op) {
 	case "mod":
@@ -163,5 +170,3 @@ switch ($op) {
 
 
 icms_cp_footer();
-
-?>

@@ -1,5 +1,4 @@
 <?php
-
 /**
 * $Id: admin_header.php 20145 2010-09-15 13:06:09Z mekdrop $
 * Module: SmartTask

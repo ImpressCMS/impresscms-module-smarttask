@@ -1,26 +1,5 @@
 <?php
 
-function edititem($item_itemid = 0)
-{
-	global $smarttask_item_handler, $smarttask_list_handler, $icmsTpl;
-
-	$itemObj = $smarttask_item_handler->get($item_itemid);
-
-	if (!$itemObj->isNew()){
-		$sform = $itemObj->getForm(_MD_STASK_ITEM_EDIT, 'additem');
-		$sform->assign($icmsTpl, 'smarttask_item');
-		$icmsTpl->assign('categoryPath', _MD_STASK_ITEM_EDIT);
-	} else {
-		$item_listid = isset($_GET['item_listid']) ? intval($_GET['item_listid']) : 0;
-		$listObj = $smarttask_list_handler->get($item_listid);
-
-		$itemObj->setVar('item_listid', $item_listid);
-
-		$sform = $itemObj->getForm(_MD_STASK_ITEM_CREATE, 'additem');
-		$sform->assign($icmsTpl, 'smarttask_item');
-		$icmsTpl->assign('categoryPath', _MD_STASK_ITEM_CREATE);
-	}
-}
 /* set get and post filters before including admin_header, if not strings */
 $filter_get = array(
 		'op' => 'str',
@@ -38,6 +17,27 @@ $item_itemid = 0;
 
 include_once('header.php');
 
+
+function edititem($item_itemid = 0)
+{
+	global $smarttask_item_handler, $smarttask_list_handler, $icmsTpl;
+
+	$itemObj = $smarttask_item_handler->get($item_itemid);
+
+	if (!$itemObj->isNew()){
+		$sform = $itemObj->getForm(_MD_STASK_ITEM_EDIT, 'additem');
+		$sform->assign($icmsTpl, 'smarttask_item');
+		$icmsTpl->assign('categoryPath', _MD_STASK_ITEM_EDIT);
+	} else {
+		$listObj = $smarttask_list_handler->get($item_listid);
+
+		$itemObj->setVar('item_listid', $item_listid);
+
+		$sform = $itemObj->getForm(_MD_STASK_ITEM_CREATE, 'additem');
+		$sform->assign($icmsTpl, 'smarttask_item');
+		$icmsTpl->assign('categoryPath', _MD_STASK_ITEM_CREATE);
+	}
+}
 if (!$op && $item_itemid > 0) {
 	$op = 'view';
 }
